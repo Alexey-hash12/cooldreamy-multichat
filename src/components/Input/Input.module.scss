@@ -1,0 +1,37 @@
+.wrapper {
+    position: relative;
+    color: #fff;
+
+    .icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9292A3;
+        position: absolute;
+        top: calc(50% - 12px);
+        right: 0;
+        padding: 0 12px;
+    }
+
+    .icon.beforeIcon {
+
+    }
+
+    .icon.afterIcon {
+
+    }
+
+    input {
+        padding: 8px;
+        background: #252548;
+        border: 1px solid #454563;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        color: #fff;
+        
+    }
+}

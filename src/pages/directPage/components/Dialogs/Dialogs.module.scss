@@ -1,0 +1,23 @@
+.wrapper {
+    padding: 15px;
+    border-radius: 8px;
+    background-color:#252548;
+    border: 1px solid var(--blue_3);
+    
+
+    .search {
+        margin-bottom: 20px;
+    }
+
+    .list {
+
+        .item {
+            margin-bottom: 8px;
+            
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}

@@ -1,0 +1,129 @@
+.wrapper {
+    padding: 15px;
+    border-radius: 8px;
+    background-color:#252548;
+    border: 1px solid var(--blue_3);
+
+    .tabs {
+        display: flex;
+        align-items: center;
+        margin-left: -5px;
+        margin-right: -5px;
+        margin-bottom: 12px;
+
+        .tab.active {
+            background-color: #7D6AF0;
+
+            .label {
+                color: #fff;
+            }
+
+            .count {
+                background: rgba(255, 255, 255, 0.5);
+                color: #2E2E4F;
+            }
+        }
+
+        .tab {
+            margin: 0 5px;
+            height: 35px;
+            background: #2E2E4F;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all .3s ease;
+            width: 100%;
+            padding: 0 8px;
+
+            .label {
+                display: flex;
+                align-items: center;
+                color: #7D6AF0;
+
+                .icon {
+                    transition: all .3s ease;
+                    line-height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 8px;
+                    font-size: 24px;
+
+                }
+
+                .title {
+                    transition: all .3s ease;
+                    font-weight: 600;
+                }
+
+            }
+
+            .count {
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 8px;
+                font-size: 13px;
+                line-height: 130%;
+                width: 40px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                color: #fff;
+            }
+        }
+    }
+
+    .search {
+
+    }
+
+    .action {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0;
+
+        .part {
+            display: flex;
+            align-items: center;
+            margin-left: -3px;
+            margin-right: -3px;
+
+            .action_btn {
+                width: 35px;
+                height: 35px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 100%;
+                color: #fff;
+                margin: 0 3px;
+            }
+
+            .action_btn.aqua {
+                background-color: #29ABE2;
+            }
+            .action_btn.yellow {
+                background-color: #F9A21F;
+            }
+            .action_btn.green {
+                background-color: #3CA974;
+            }
+            .action_btn.blue {
+                background-color: #7D6AF0;
+            }
+        }
+    }
+
+    .list {
+        .item {
+            margin-bottom: 8px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
