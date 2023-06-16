@@ -3,12 +3,29 @@
     height: 88px;
     background: rgba(217, 217, 217, 0.05);
     border-radius: 8px;
+    display: flex;
+    transition: all .3s ease;
     
+
     .avatar {
 
     }
 
     .body {
         width: 100%;
+        padding-left: 10px;
+        overflow: hidden;
+
+        .top {
+            margin-bottom: 3px;   
+            .id {
+                color: rgba(255, 255, 255, 0.5);
+                text-align: right;
+            }
+        }
     }
+}
+
+.wrapper.active {
+    background: rgba(125, 106, 240, 0.3);
 }

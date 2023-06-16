@@ -1,0 +1,22 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+
+    .icon {
+        font-size: 24px;
+        line-height: 24px;
+        color: #7D6AF0;
+        margin-right: 10px;
+    }
+
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #7D6AF0;
+        color: #fff;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 4px 12px;
+    }
+}

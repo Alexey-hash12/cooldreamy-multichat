@@ -1,0 +1,18 @@
+.wrapper {
+
+    textarea {
+        padding: 8px 12px;
+        color: #fff;
+        font: inherit;
+        background: #252548;
+        border: 1px solid #454563;
+        border-radius: 8px;
+        display: block;
+        width: 100%;
+        resize: none;
+
+        &::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+    }
+}

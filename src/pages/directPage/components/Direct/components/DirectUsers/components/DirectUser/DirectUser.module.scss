@@ -1,0 +1,30 @@
+.wrapper {
+    padding: 15px 20px;
+    background: rgba(217, 217, 217, 0.05);
+    border-radius: 8px;
+
+    .main {
+        display: flex;
+        width: 100%;
+        .body {
+            display: flex;
+            width: 100%;
+            padding-left: 15px;
+            justify-content: space-between;
+
+            .part {
+                .part_item {
+                    color: rgba(255, 255, 255, 0.5);
+                    margin-bottom: 4px;
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    span {
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+    }
+}

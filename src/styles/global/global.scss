@@ -19,6 +19,7 @@ input, textarea, button {
 button {
     transition: all .3s ease;
     cursor: pointer;
+    user-select: none;
 
     &:active {
         transform: scale(0.95);

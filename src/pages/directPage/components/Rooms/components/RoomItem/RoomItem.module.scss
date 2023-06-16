@@ -3,14 +3,46 @@
     border-radius: 8px;
     padding: 15px 20px;
     display: flex;
-    align-items: center;
-    
-    .avatar {
+    // align-items: center;
+    justify-content: space-between;
 
+    .part {
+        display: flex;
+        width: 100%;
+  
+
+        &:last-child {
+            .body {
+
+                text-align: right;
+            }
+        }
+
+        .body {
+            padding: 0 10px;
+            width: 100%;
+
+            .x {
+                font-size: 16px;
+                font-weight: 700;
+            }
+            .y {
+                color: rgba(255, 255, 255, 0.5);
+            }
+        }
     }
 
-    .body {
-        padding: 0 10px;
-        width: 100%;
+    .badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        .new {
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 0 8px;
+            background-color: var(--red_1);
+            padding: 4px 12px;
+        }
     }
 }
