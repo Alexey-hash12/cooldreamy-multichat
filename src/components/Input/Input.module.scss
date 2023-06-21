@@ -1,6 +1,15 @@
 .wrapper {
-    position: relative;
-    color: #fff;
+    
+    color: #fff;    
+
+    .label {
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .main {
+        position: relative;
+    }
 
     .icon {
         width: 24px;

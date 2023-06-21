@@ -1,0 +1,35 @@
+.wrapper {
+    height: calc(100vh - 95px - 30px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .main {
+        max-width: 590px;
+        width: 100%;
+        
+        background: #252548;
+        padding: 40px 25px;
+        border-radius: 12px;
+
+        .form {
+            max-width: 274px;
+            width: 100%;
+            margin: 0 auto;
+
+            .title {
+                text-align: center;
+                font-weight: 700;
+                font-size: 20px;
+                line-height: 100%;
+            }
+
+            .action {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}
