@@ -5,7 +5,7 @@ const endpoints = {
     login: `${API_PATH}token`,
 
 
-    getLinkedUsers: `${API_PATH}profile/get_link_users`
+    getLinkedUsers: `${API_PATH}operators/users`
 }
 
 
