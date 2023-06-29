@@ -6,7 +6,8 @@ import { IAvatar } from './types';
 const Avatar:FC<IAvatar> = ({
     size = 60,
     isNewAction = true,
-    isRound
+    isRound,
+    image
 }) => {
 
 
@@ -14,7 +15,9 @@ const Avatar:FC<IAvatar> = ({
         <div 
             style={{width: size, height: size}}
             className={`${styles.wrapper} ${isNewAction ? styles.new : ''} ${isRound ? styles.round : ''}`}>
-            <div className={styles.avatar}></div>
+            <div className={styles.avatar}>
+                <img src={image} alt="" />
+            </div>
         </div>
     )
 }

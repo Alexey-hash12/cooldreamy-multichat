@@ -6,8 +6,16 @@ import {FaHeadphonesAlt} from 'react-icons/fa';
 import {GiRoundStar} from 'react-icons/gi';
 import {TbMoneybag} from 'react-icons/tb';
 import RoomItem from './components/RoomItem/RoomItem';
+import {FC} from 'react'
+import { IUser } from '../../../../models/IUser';
 
-const Rooms = () => {
+interface I {
+    list: any[]
+}
+
+const Rooms:FC<I> = ({
+    list
+}) => {
 
 
     return (
@@ -44,9 +52,11 @@ const Rooms = () => {
                 </div>
             </div>
             <div className={styles.list}>
-                <div className={styles.item}><RoomItem/></div>
-                <div className={styles.item}><RoomItem/></div>
-                <div className={styles.item}><RoomItem/></div>
+                {
+                    list?.map((i,index) => (
+                        <div key={i.id} className={styles.item}><RoomItem {...i}/></div>
+                    ))
+                }
             </div>
         </div>
     )

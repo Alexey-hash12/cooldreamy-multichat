@@ -6,14 +6,29 @@ import Rooms from './components/Rooms/Rooms';
 import Direct from './components/Direct/Direct';
 import { useAppSelector } from '../../hooks/reduxHooks';
 import ApiService from '../../service/ApiService';
-import { useEffect } from 'react';
-
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { IUser } from '../../models/IUser';
 
 
 const service = new ApiService()
 
 const DirectPage = () => {
     const {token} = useAppSelector(s => s.mainReducer)
+    const queryes = useSearchParams()
+    const [type, setType] = useState<any>('chat') // chat, mail
+
+
+    //data
+    const [rooms, setRooms] = useState<any[]>([])
+
+
+    useEffect(() => {
+        if(queryes) {
+            setType(queryes[0].get('type'))
+        }
+    }, [queryes])
+
 
 
     useEffect(() => {
@@ -23,6 +38,26 @@ const DirectPage = () => {
             })
         }
     }, [token])
+
+
+    const getRooms = () => {
+        if(token) {
+            if(type === 'chat') {
+                service.getChats(token).then(res => {
+                    setRooms(res?.data)
+                })
+            }
+        }
+    }
+
+
+
+
+    useEffect(() => {
+        getRooms()
+    }, [token, type])
+
+    
 
 
     return (
@@ -36,7 +71,9 @@ const DirectPage = () => {
                         <Direct/>
                     </Col>
                     <Col span={7}>
-                        <Rooms/>
+                        <Rooms
+                            list={rooms}
+                            />
                     </Col>
                 </Row>
             </DirectLayout>
