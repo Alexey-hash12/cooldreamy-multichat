@@ -18,7 +18,7 @@ const DirectPage = () => {
 
     useEffect(() => {
         if(token) {
-            service.getLinkedUsers(token).then(res => {
+            service.getChats(token).then(res => {
                 console.log(res)
             })
         }

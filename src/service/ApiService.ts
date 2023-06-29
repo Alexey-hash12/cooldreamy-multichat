@@ -26,9 +26,9 @@ class ApiService {
         }
     }
 
-    getLinkedUsers = async (token: any) => {
+    getChats = async (token: any) => {
         try {
-            let res = await fetch(endpoints.getLinkedUsers, {
+            let res = await fetch(endpoints.getChats, {
                 method: 'GET',
                 headers: {
                     ...headers,

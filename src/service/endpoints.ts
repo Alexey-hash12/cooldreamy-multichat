@@ -1,11 +1,16 @@
 const BASE_DOMAIN = `https://api.cooldreamy.com/`;
-const API_PATH = `${BASE_DOMAIN}api/`;
+const TEST_DOMAIN = `https://newapi.soultri.site/`;
+const API_PATH = `${TEST_DOMAIN}api/`;
 
 const endpoints = {
     login: `${API_PATH}token`,
 
 
-    getLinkedUsers: `${API_PATH}operators/users`
+    getChats: `${API_PATH}operators/chats`,
+    getMails: `${API_PATH}operators/letters`,
+
+    
+
 }
 
 
