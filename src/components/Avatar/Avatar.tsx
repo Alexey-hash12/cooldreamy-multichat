@@ -5,7 +5,7 @@ import { IAvatar } from './types';
 
 const Avatar:FC<IAvatar> = ({
     size = 60,
-    isNewAction = true,
+    isNewAction = false,
     isRound,
     image
 }) => {

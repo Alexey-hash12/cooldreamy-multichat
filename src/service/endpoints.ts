@@ -9,7 +9,11 @@ const endpoints = {
     getChats: `${API_PATH}operators/chats`,
     getMails: `${API_PATH}operators/letters`,
 
-    
+
+    getChatDialog: `${API_PATH}operators/chats`,
+    getMailDialog: `${API_PATH}letter`,
+
+    getInbox: `${API_PATH}operators/messages`
 
 }
 

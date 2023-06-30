@@ -14,7 +14,7 @@ const App = () => {
             <MainLayout>
                 <Routes>
                     <Route path='/auth' element={<AuthPage/>}/>
-                    <Route path='/' element={<PrivateRoute><DirectPage/></PrivateRoute>}/>    
+                    <Route path='/direct' element={<PrivateRoute><DirectPage/></PrivateRoute>}/>    
                 </Routes>            
             </MainLayout>
         </Provider>

@@ -8,28 +8,54 @@ import DialogItemNew from './components/DialogItemNew/DialogItemNew';
 import DialogItemMail from './components/DialogItemMail/DialogItemMail';
 import DialogItemChat from './components/DialogItemChat/DialogItemChat';
 
-const DialogItem = () => {
+
+
+const DialogItem = (props: any) => {
+    const {
+        name,
+        age,
+        id,
+        avatar_url_thumbnail,
+        online
+    } = props?.other_user
+    const {
+        last_message
+    } = props
 
     return (
         <div className={`${styles.wrapper}`}>
             <div className={styles.avatar}>
-                <Avatar/>
+                <Avatar
+                    image={avatar_url_thumbnail}
+                    isNewAction={online === 1}
+                    />
             </div>
             <div className={styles.body}>
                 <div className={styles.top}>
                     <Row align={'middle'} gutter={[5,5]}>
                         <Col span={12}>
-                            <UserTitle/>
+                            <UserTitle
+                                username={name}
+                                age={age}
+                                />
                         </Col>
                         <Col span={12}>
                             <div className={styles.id}>
-                            id 123456
+                            id {id}
                             </div>
                         </Col>
                     </Row>
                 </div>
                 <div className={styles.main}>
-                    <DialogItemNew/>
+                    {
+                        !last_message ? (
+                            // <DialogItemNew/>
+                            null
+                        ) : (
+                            null
+                        )
+                    }
+                    
                 </div>
             </div>
         </div>

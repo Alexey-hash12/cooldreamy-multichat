@@ -5,11 +5,18 @@
     display: flex;
     // align-items: center;
     justify-content: space-between;
+    transition: all .3s ease;
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(125, 106, 240, 0.30);
+    }
 
     .part {
         display: flex;
-        width: 100%;
-  
+        width: 50%;
+        // flex: 0 0 50%;
+        overflow: hidden;
 
         &:last-child {
             .body {
@@ -21,6 +28,7 @@
         .body {
             padding: 0 10px;
             width: 100%;
+            overflow: hidden;
 
             .x {
                 font-size: 16px;
@@ -45,4 +53,8 @@
             padding: 4px 12px;
         }
     }
+}
+
+.wrapper.active {
+    background: rgba(125, 106, 240, 0.30);
 }

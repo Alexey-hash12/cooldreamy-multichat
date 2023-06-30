@@ -26,10 +26,68 @@ class ApiService {
         }
     }
 
-    getChats = async (token: any) => {
+    getChats = async (token: any, {
+        page = 1,
+        per_page = 10,
+        search = ''
+    }: {
+        page: number,
+        per_page: number,
+        search?: string
+    }) => {
         try {
-            let res = await fetch(endpoints.getChats, {
+            let res = await fetch(endpoints.getChats + `?page=${page}&per_page=${per_page}&search=${search}`, {
                 method: 'GET',
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+
+
+    getChatDialog = async (token: any, {
+        id,
+        page = 1,
+        per_page = 10
+    }: {
+        id: string | number,
+        page: number,
+        per_page: number 
+    }) => {
+        try {
+            let res = await fetch(endpoints.getChatDialog + `/${id}?page=${page}&per_page=${per_page}`, {
+                method: "GET",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    getInbox = async (token: any, {
+        page = 1,
+        per_page = 10,
+        search = ''
+    }: {
+        page: number,
+        per_page: number,
+        search: string 
+    }) => {
+        try {
+            let res = await fetch(endpoints.getInbox + `?page=${page}&per_page=${per_page}&search=${search}`, {
+                method: "GET",
                 headers: {
                     ...headers,
                     'Authorization': `Bearer ${token}`

@@ -26,8 +26,10 @@ const AuthPage = () => {
             }).then(res => {
                 console.log(res)
                 if(res?.token) {
+                    LOCAL_STORAGE.setItem('cooldreamy-multichat-token', res?.token)
                     dispatch(main_tokenUpdate(res?.token))
-                    navigate('/')
+
+                    navigate('/direct?type=chat')
                 } else {
                     alert('ERROR!')
                 }

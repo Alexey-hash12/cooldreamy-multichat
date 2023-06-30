@@ -1,4 +1,6 @@
 .wrapper {
+    position: relative;
+    z-index: 10;
     .item {
         margin-bottom: 8px;
         &:last-child {

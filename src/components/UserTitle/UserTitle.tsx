@@ -14,7 +14,7 @@ const UserTitle:FC<I> = ({
 
     return (
         <div className={styles.wrapper}>
-            <span className={styles.age}>{username}</span><span className={styles.age}>, {age}</span>
+            <span className={styles.username}>{username}</span><span className={styles.age}>, {age}</span>
         </div>
     )
 }

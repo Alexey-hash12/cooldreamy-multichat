@@ -2,4 +2,18 @@
     font-size: 16px;
     line-height: 130%;
     color: #fff;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  
+    .username {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        // width: 100%;
+    }
+
+    .age {
+        white-space: nowrap;
+    }
 }

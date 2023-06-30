@@ -1,18 +1,26 @@
 .wrapper {
     padding: 15px 20px;
-    background: rgba(217, 217, 217, 0.05);
+    background-color: #2E2E4F;
     border-radius: 8px;
+    overflow: hidden;
 
     .main {
         display: flex;
         width: 100%;
+        overflow: hidden;
+
         .body {
             display: flex;
             width: 100%;
             padding-left: 15px;
             justify-content: space-between;
+            overflow: hidden;
 
             .part {
+                overflow: hidden;
+                flex: 0 0 auto;
+                width: calc(100% / 3);
+                padding: 0 3px;
                 .part_item {
                     color: rgba(255, 255, 255, 0.5);
                     margin-bottom: 4px;

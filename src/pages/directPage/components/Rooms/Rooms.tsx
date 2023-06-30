@@ -8,36 +8,75 @@ import {TbMoneybag} from 'react-icons/tb';
 import RoomItem from './components/RoomItem/RoomItem';
 import {FC} from 'react'
 import { IUser } from '../../../../models/IUser';
+import { useState, useEffect } from 'react';
+import { useDebounce } from 'usehooks-ts';
+import { useNavigate } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
+import {PulseLoader} from 'react-spinners'
+
 
 interface I {
-    list: any[]
+    list: any[],
+    type?: 'chat' | 'mail',
+    total?: number,
+    setPage?:(...args: any[]) => any,
+    setSearchValue: (...args: any[]) => any,
+    searchValue: string
 }
 
 const Rooms:FC<I> = ({
-    list
+    list,
+    type,
+    total,
+    setPage,
+    setSearchValue,
+    searchValue
 }) => {
+    const {inView, ref} = useInView()
+    const nav = useNavigate()
+
+
+    const [loadMore, setLoadMore] = useState<boolean>(false)
+    
+    
+    useEffect(() => {
+        if(total !== undefined) {
+            list?.length >= total ? setLoadMore(false) : setLoadMore(true)
+        }
+       
+    }, [list, total])
+
+    useEffect(() => {
+        if(loadMore && inView) {
+            setPage && setPage((s: number) => s + 1)
+        }
+    }, [inView, loadMore, setPage, list])
+
+
 
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.tabs}>
-                <button className={`${styles.tab} ${styles.active}`}>
+                <button onClick={() => nav('/direct?type=chat')} className={`${styles.tab} ${type === 'chat' ? styles.active : ''}`}>
                     <div className={styles.label}>
                         <div className={styles.icon}><IoChatbubblesOutline/></div>
                         <div className={styles.title}>Чат</div>
                     </div>
-                    <div className={styles.count}>45</div>
+                    {/* <div className={styles.count}>45</div> */}
                 </button>
-                <button className={styles.tab}>
+                <button onClick={() => nav('/direct?type=mail')} className={`${styles.tab} ${type === 'mail' ? styles.active : ''}`}>
                     <div className={styles.label}>
                         <div className={styles.icon}><HiOutlineMail/></div>
                         <div className={styles.title}>Письма</div>
                     </div>
-                    <div className={styles.count}>2</div>
+                    {/* <div className={styles.count}>2</div> */}
                 </button>
             </div>
             <div className={styles.search}>
                 <Input
+                    value={searchValue}
+                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
                     placeholder='...Поиск'
                     />
             </div>
@@ -54,8 +93,17 @@ const Rooms:FC<I> = ({
             <div className={styles.list}>
                 {
                     list?.map((i,index) => (
-                        <div key={i.id} className={styles.item}><RoomItem {...i}/></div>
+                        <div key={i.id} className={styles.item}><RoomItem {...i} type={type}/></div>
                     ))
+                }
+                {
+                    list && list?.length > 0 && (
+                        loadMore && (
+                            <div ref={ref} className={styles.load}>
+                                <PulseLoader color='#fff'/>
+                            </div>
+                        )
+                    )
                 }
             </div>
         </div>
