@@ -42,6 +42,7 @@
         overflow-y: auto;
         max-height: 100%;
         padding: 20px;
+        padding-bottom: 65px;
 
         .item {
             margin-bottom: 5px; 
@@ -58,6 +59,17 @@
     }
 
     .mail {
-        
+        flex: 1 0 auto;
+        overflow-y: auto;
+        max-height: 100%;
+        padding-bottom: 65px;
+        overflow-x: hidden;
+
+        .load {
+            display: flex;align-items: center;
+            justify-content: center;
+            padding: 20px;
+            width: 100%;
+        }
     }
 }

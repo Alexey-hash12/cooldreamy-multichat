@@ -14,6 +14,7 @@ interface I {
     total?: number,
     selfUserId?: number | string,
 
+    chatBottomPadding?: number
 
     selfUser?: any,
     otherUser?:any
@@ -27,8 +28,11 @@ const Direct:FC<I> = ({
     total,
     selfUserId,
 
+    chatBottomPadding,
+
     selfUser,
-    otherUser
+    otherUser,
+
 }) => {
     const {inView, ref} = useInView()
     const [loadMore, setLoadMore] = useState<boolean>(false)
@@ -74,7 +78,7 @@ const Direct:FC<I> = ({
                 {/* <div className={styles.users_pl}>
                     <DirectUsers/>
                 </div> */}
-                <div className={`${styles.chat} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`}}>
+                <div className={`${styles.chat} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`, paddingBottom: chatBottomPadding}}>
                     
                     {
                         list?.map((item,index) => (
@@ -120,11 +124,34 @@ const Direct:FC<I> = ({
         return (
             <div className={styles.wrapper}>
             
-                <DirectUsers/>
-                <div className={styles.mail}>
+                <div className={styles.users} ref={exRef}>
+                    {
+                        (selfUser && otherUser) && (
+                            <DirectUsers
+                                otherUser={otherUser}
+                                selfUser={selfUser}
+                                />
+                        )
+                    }
+                </div>
+                <div className={`${styles.mail} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`, paddingBottom: chatBottomPadding}}>
+                    {
+                        list?.map((i, index) => (
+                            <div className={styles.item}>
+                                <MailMessage {...i}/>
+                            </div>
+                        ))
+                    }
 
-
-
+                    {
+                        list && list?.length > 0 && (
+                            loadMore && (
+                                <div ref={ref} className={styles.load}>
+                                    <PulseLoader color='#fff'/>
+                                </div>
+                            )
+                        )
+                    }
                 </div>
                 
                 

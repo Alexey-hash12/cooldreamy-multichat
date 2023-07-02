@@ -4,5 +4,10 @@ export interface IIconButton extends HTMLProps<HTMLButtonElement> {
     icon?: ReactNode,
     iconSize?: number | string,
     type?: "button" | "submit" | "reset",
-    isNewAction?: boolean
+    variant?: iconButtonVariants
+    isNewAction?: boolean,
+    isRound?: boolean
 }
+
+
+export type iconButtonVariants = 'violet' | 'simple'

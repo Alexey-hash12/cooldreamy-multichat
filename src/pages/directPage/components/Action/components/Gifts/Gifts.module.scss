@@ -1,0 +1,43 @@
+.wrapper {
+    background-color: #3F3A7B;
+    padding: 20px;
+    width: 450px;
+    border-radius: 10px;
+    overflow: hidden;
+
+    .body {
+        display: flex;
+        flex-wrap: wrap;
+        max-height: 250px;
+        overflow-y: auto;
+
+        .item {
+            margin: 5px;
+            width: 60px;
+            width: calc((100% / 4) - 10px);
+            cursor: pointer;
+
+            .img {
+                height: 60px;
+                width: 100%;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                    display: flex;
+                }
+            }
+            .descr {
+                text-align: center;
+                .name {
+                    // margin-bottom: 5px;
+                    font-weight: 500;
+                    color: #fff;
+                }
+                .price {
+
+                }
+            }
+        }
+    }
+}

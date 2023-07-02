@@ -6,7 +6,6 @@ const DialogItemNew = () => {
 
     return (
         <div className={styles.wrapper}>
-            <div className={styles.icon}><IoChatbubblesOutline/></div>
             <button className={styles.btn}>Напишите сообщение</button>
         </div>
     )
