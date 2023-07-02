@@ -86,9 +86,14 @@ const Action:FC<I> = ({
                 }
             }
             if(type === 'mail') {
-                if(text && id) {
-                 
-                }
+                // if(text && id) {
+                //     service.sendMailMessage(token, id, {text}).then(res => {
+                //         console.log(res)
+                //         if(res?.id) {
+                //             onUpdateChat && onUpdateChat({messageBody: res?.})
+                //         }
+                //     })
+                // }
             }
         }
     }

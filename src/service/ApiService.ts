@@ -29,14 +29,16 @@ class ApiService {
     getChats = async (token: any, {
         page = 1,
         per_page = 10,
-        search = ''
+        search = '',
+        filter_type
     }: {
         page: number,
         per_page: number,
-        search?: string
+        search?: string,
+        filter_type?: any
     }) => {
         try {
-            let res = await fetch(endpoints.getChats + `?page=${page}&per_page=${per_page}&search=${search}`, {
+            let res = await fetch(endpoints.getChats + `?page=${page}&per_page=${per_page}&search=${search}&filter_type=${filter_type}`, {
                 method: 'GET',
                 headers: {
                     ...headers,
@@ -52,14 +54,16 @@ class ApiService {
     getMails = async (token: any, {
         page = 1,
         per_page = 10,
-        search = ''
+        search = '',
+        filter_type
     }: {
         page: number,
         per_page: number,
-        search?: string
+        search?: string,
+        filter_type?: any
     }) => {
         try {
-            let res = await fetch(endpoints.getMails + `?page=${page}&per_page=${per_page}&search=${search}`, {
+            let res = await fetch(endpoints.getMails + `?page=${page}&per_page=${per_page}&search=${search}&filter_type=${filter_type}`, {
                 method: 'GET',
                 headers: {
                     ...headers,
@@ -163,11 +167,22 @@ class ApiService {
         }
     }
 
-    // sendMailMessage = async (token: any, id: number | string, body: {text: string}) => {
-    //     try {
-    //         let res = await fetch(`${API_PATH}ope`)
-    //     }
-    // }
+    sendMailMessage = async (token: any, id: number | string, body: {text: string}) => {
+        try {
+            let res = await fetch(`${API_PATH}operators/letter/${id}/send/message`, {
+                method: "POST",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
 
 
     sendChatMessage = async (token: any, id: number | string, body: {text: string}) => {
@@ -299,7 +314,7 @@ class ApiService {
         }
     }
 
-    workStop = async (token: any, id: number | string) => {
+    workStop = async (token: any) => {
         try {
             let res = await fetch(endpoints.workStop, {
                 method: 'POST',
@@ -307,7 +322,89 @@ class ApiService {
                     ...headers,
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({id})
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    getReports = async (token: any, {
+        page,
+        per_page
+    }: {
+        page: number,
+        per_page: number
+    }) => {
+        try {
+            let res = await fetch(endpoints.reports + `?page=${page}&per_page=${per_page}`, {
+                method: "GET",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                },
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    deleteReport = async (token: any, id: number | string) => {
+        try {
+            let res = await fetch(endpoints.reports + `/${id}`, {
+                method: "DELETE",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                },
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    getLogs = async (token: any, {
+        page,
+        per_page
+    }: {
+        page: number,
+        per_page: number
+    }) => {
+        try {
+            let res = await fetch(endpoints.logs + `?page=${page}&per_page=${per_page}`, {
+                method: "GET",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                },
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+
+    getFaults = async (token: any, {
+        page,
+        per_page
+    }: {
+        page: number,
+        per_page: number
+    }) => {
+        try {
+            let res = await fetch(endpoints.fault + `?page=${page}&per_page=${per_page}`, {
+                method: "GET",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                },
             })
             const r = await checkAuth(res)
             return await r;

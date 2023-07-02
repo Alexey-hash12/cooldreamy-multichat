@@ -10,13 +10,13 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { IUser } from '../../models/IUser';
 import Action from './components/Action/Action';
-import { sortingChatList, sortingDialogList } from '../../utils/sorting';
+import { sortingChatList, sortingDialogList, sortingMailChatList } from '../../utils/sorting';
 
 
 const service = new ApiService()
 
 const DirectPage = () => {
-    const {token, socketChanel, newMessage} = useAppSelector(s => s.mainReducer)
+    const {token, socketChanel, newChatMessage, newMailMessage} = useAppSelector(s => s.mainReducer)
     const queryes = useSearchParams()
     const [type, setType] = useState<any>('chat') // chat, mail
     const [id, setId] = useState<any>()
@@ -31,9 +31,11 @@ const DirectPage = () => {
 
     const [dialogPage, setDialogPage] = useState(1)
     const [dialogTotal, setDialogTotal] = useState<any>()
+    
 
     const [chatsPage, setChatsPage] = useState(1)
     const [chatsTotal, setChatsTotal] = useState<any>()
+    const [chatsFilter, setChatsFilter] = useState<'online' | 'premium' | 'payed' | 'super_payed' | ''>('')
 
     const [inboxPage, setInboxPage] = useState(1)
     const [inboxTotal, setInboxTotal] = useState<any>()
@@ -58,7 +60,7 @@ const DirectPage = () => {
     const getRooms = () => {
         if(token && chatsPage) {
             if(type === 'chat') {
-                service.getChats(token, {page: chatsPage, per_page: 5, search: chatsSearch}).then(res => {
+                service.getChats(token, {page: chatsPage, per_page: 5, search: chatsSearch, filter_type: chatsFilter}).then(res => {
                     setChatsTotal(res?.total)
                     if(chatsPage === 1) {
                         setRooms(res?.data)
@@ -68,7 +70,7 @@ const DirectPage = () => {
                 })
             }
             if(type === 'mail') {
-                service.getMails(token, {page: chatsPage, per_page: 5, search: chatsSearch}).then(res => {
+                service.getMails(token, {page: chatsPage, per_page: 5, search: chatsSearch, filter_type: chatsFilter}).then(res => {
                     setChatsTotal(res?.total)
                     console.log(res)
                     if(chatsPage === 1) {
@@ -152,11 +154,11 @@ const DirectPage = () => {
 
     useEffect(() => {
         setChatsPage(1)
-    }, [type])
+    }, [type, chatsFilter])
 
     useEffect(() => {
         getRooms()
-    }, [token, type, chatsPage, chatsSearch])
+    }, [token, type, chatsPage, chatsSearch, chatsFilter])
 
     useEffect(() => {
         getInbox()
@@ -172,6 +174,7 @@ const DirectPage = () => {
         dialogBody?:any
     }) => {
         // ?? В САМОМ ЧАТЕ
+        console.log(body)
         if(body?.dialogBody && body?.messageBody) {
 
             // TODO Если выбран ЧАТ
@@ -205,33 +208,33 @@ const DirectPage = () => {
             } 
 
             // // TODO Если выбраны ПИСЬМА
-            // if(chatType === 'mail') {
-            //     const foundLetter = chatList?.find(s => s?.id == body?.messageBody?.id)
-            //     if(foundLetter) {
-            //         setChatList(s => {
-            //             const m = s;
-            //             const rm = m.splice(m.findIndex(i => i.id == foundLetter?.id), 1, body?.messageBody)
-            //             return sortingMailChatList([...m])
-            //         })
-            //     } else {
-            //         setChatList(s => {
-            //             return sortingMailChatList([body?.messageBody, ...s])
-            //         })
-            //     }
+            if(type === 'mail') {
+                const foundLetter = messages?.find(s => s?.id == body?.messageBody?.id)
+                if(foundLetter) {
+                    setMessages(s => {
+                        const m = s;
+                        const rm = m.splice(m.findIndex(i => i.id == foundLetter?.id), 1, body?.messageBody)
+                        return sortingMailChatList([...m])
+                    })
+                } else {
+                    setMessages(s => {
+                        return sortingMailChatList([body?.messageBody, ...s])
+                    })
+                }
 
-            //     const foundDialog = dialogsList?.find(s => s?.id == body?.dialogBody?.id) 
-            //     if(foundDialog) {
-            //         setDialogsList(s => {
-            //             const m = s;
-            //             const rm = m.splice(m.findIndex(i => i.id == foundDialog?.id), 1, body?.dialogBody)
-            //             return sortingDialogList([...m])
-            //         })
-            //     } else {
-            //         setDialogsList(s => {
-            //             return sortingDialogList([body?.dialogBody, ...s])
-            //         })
-            //     }
-            // }
+                // const foundDialog = rooms?.find(s => s?.id == body?.dialogBody?.id) 
+                // if(foundDialog) {
+                //     setRooms(s => {
+                //         const m = s;
+                //         const rm = m.splice(m.findIndex(i => i.id == foundDialog?.id), 1, body?.dialogBody)
+                //         return sortingDialogList([...m])
+                //     })
+                // } else {
+                //     setRooms(s => {
+                //         return sortingDialogList([body?.dialogBody, ...s])
+                //     })
+                // }
+            }
         } else {
             // !! НЕХВАТАЕТ ВХОДНЫХ ДАННЫХ
         }
@@ -243,15 +246,32 @@ const DirectPage = () => {
     useEffect(() => {
         if(socketChanel) {
             if(type === 'chat') {
-                if(newMessage) {
-                    console.log(newMessage)
+                if(newChatMessage) {
+                    // onUpdateChat && onUpdateChat({
+                    //     messageBody: newChatMessage?.chat_list_item?.chat?.last_message, 
+                    //     dialogBody: newChatMessage?.chat_list_item?.chat
+                    // })
+                    onUpdateChat && onUpdateChat({
+                        messageBody: newChatMessage?.chat_message, 
+                        dialogBody: newChatMessage?.chat_list_item
+                    })
                 }
             }
             if(type === 'mail') {
-                
+                if(newMailMessage) {
+                    // console.log(newMailMessage)
+                    // onUpdateChat && onUpdateChat({
+                    //     messageBody: newMailMessage?.letter_list_item?.letter?.last_message, 
+                    //     dialogBody: newMailMessage?.letter_list_item?.letter
+                    // }) 
+                    onUpdateChat && onUpdateChat({
+                        messageBody: newMailMessage?.letter_message, 
+                        dialogBody: newMailMessage?.letter_list_item 
+                    }) 
+                }
             }
         }
-    }, [newMessage, socketChanel, id, type])
+    }, [newChatMessage, newMailMessage, socketChanel, id, type])
 
 
     return (
@@ -303,6 +323,9 @@ const DirectPage = () => {
                             
                                 searchValue={chatsSearch}
                                 setSearchValue={setChatsSearch}
+
+                                filter={chatsFilter}
+                                setFilter={setChatsFilter}
                                 />
                         </div>
                     </Col>

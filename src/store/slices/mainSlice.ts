@@ -10,8 +10,9 @@ const mainSlice = createSlice({
         main_tokenDelete: (state) => {state.token = null},
         main_updateAdminId: (state,action) => {state.adminId = action.payload},
         main_updateSocket: (state, action) => {state.socketChanel = action.payload},
-        main_updateNewMessage: (state, action) => {state.newMessage = action.payload}
-    }
+        main_updateNewChatMessage: (state, action) => {state.newChatMessage = action.payload},
+        main_updateNewMailMessage: (state, action) => {state.newMailMessage = action.payload}
+    },
 })
 
 
@@ -24,5 +25,7 @@ export const {
     main_tokenUpdate,
     main_updateAdminId,
     main_updateSocket,
-    main_updateNewMessage
+    
+    main_updateNewChatMessage,
+    main_updateNewMailMessage
 } = actions

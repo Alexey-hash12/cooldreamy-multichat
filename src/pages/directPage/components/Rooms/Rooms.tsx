@@ -21,7 +21,10 @@ interface I {
     total?: number,
     setPage?:(...args: any[]) => any,
     setSearchValue: (...args: any[]) => any,
-    searchValue: string
+    searchValue: string,
+
+    filter: 'online' | 'premium' | 'payed' | 'super_payed' | '',
+    setFilter: (...args: any[]) => any
 }
 
 const Rooms:FC<I> = ({
@@ -30,7 +33,9 @@ const Rooms:FC<I> = ({
     total,
     setPage,
     setSearchValue,
-    searchValue
+    searchValue,
+    filter,
+    setFilter,
 }) => {
     const {inView, ref} = useInView()
     const nav = useNavigate()
@@ -82,12 +87,12 @@ const Rooms:FC<I> = ({
             </div>
             <div className={styles.action}>
                 <div className={styles.part}>
-                    <button className={`${styles.action_btn} ${styles.aqua}`}><FaHeadphonesAlt/></button>
-                    <button className={`${styles.action_btn} ${styles.yellow}`}><GiRoundStar/></button>
-                    <button className={`${styles.action_btn} ${styles.green}`}><TbMoneybag/></button>
+                    <button onClick={() => setFilter('online')} className={`${styles.action_btn} ${styles.aqua}`}><FaHeadphonesAlt/></button>
+                    <button onClick={() => setFilter('premium')} className={`${styles.action_btn} ${styles.yellow}`}><GiRoundStar/></button>
+                    <button onClick={() => setFilter('payed')} className={`${styles.action_btn} ${styles.green}`}><TbMoneybag/></button>
                 </div>
                 <div className={styles.part}>
-                    <button className={`${styles.action_btn} ${styles.blue}`}><TbMoneybag/></button>
+                    <button onClick={() => setFilter('super_payed')} className={`${styles.action_btn} ${styles.blue}`}><TbMoneybag/></button>
                 </div>
             </div>
             <div className={styles.list}>

@@ -102,6 +102,12 @@
                         background-color: var(--green_2);
                         color: var(--green_3);
                     }
+
+                    &:disabled {
+                        pointer-events: none;
+                        touch-action: none;
+                        opacity: .5;
+                    }
                 }
             }
         }

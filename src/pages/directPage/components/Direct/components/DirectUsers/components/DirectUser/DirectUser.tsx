@@ -3,6 +3,9 @@ import { Row, Col } from 'antd';
 import Avatar from '../../../../../../../../components/Avatar/Avatar';
 import UserTitle from '../../../../../../../../components/UserTitle/UserTitle';
 import TextArea from '../../../../../../../../components/TextArea/TextArea';
+import IconButton from '../../../../../../../../components/IconButton/IconButton';
+import {LuEdit} from 'react-icons/lu';
+
 
 const DirectUser = (props: any) => {
     const {
@@ -13,12 +16,13 @@ const DirectUser = (props: any) => {
         credits,
         id,
         avatar_url_thumbnail,
-        online
+        online,
+        onOpenModal
     } = props
 
     return (
         <div className={styles.wrapper}>
-            <Row gutter={[25,25]}>
+            <Row style={{width: '100%'}} gutter={[25,25]}>
                 <Col span={14}>
                     <div className={styles.main}>
                         <Avatar
@@ -51,6 +55,17 @@ const DirectUser = (props: any) => {
                     </div>
                 </Col>
             </Row>
+            {
+                onOpenModal && (
+                    <div className={styles.action}>
+                        <IconButton
+                            onClick={onOpenModal}
+                            icon={<LuEdit/>}
+                            />
+                    </div>
+                )
+            }
+            
         </div>
     )
 }

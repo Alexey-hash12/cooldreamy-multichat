@@ -7,14 +7,16 @@ interface IStore {
     token: string | null,
     adminId: number | string | null,
     socketChanel: PusherPrivateChannel | null,
-    newMessage: any
+    newChatMessage: any,
+    newMailMessage: any
 }
 
 const initState: IStore = {
     token: LOCAL_STORAGE.getItem('cooldreamy-multichat-token') ? LOCAL_STORAGE.getItem('cooldreamy-multichat-token') : null,
     adminId: null,
     socketChanel: null,
-    newMessage: null
+    newChatMessage: null,
+    newMailMessage: null
 }
 
 export default initState;

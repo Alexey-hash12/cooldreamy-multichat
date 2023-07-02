@@ -6,6 +6,7 @@ import ChatMessage from '../ChatMessage/ChatMessage';
 import MailMessage from '../MailMessage/MailMessage';
 import { useInView } from 'react-intersection-observer';
 import { PulseLoader } from 'react-spinners';
+import InfoModal from '../InfoModal/InfoModal';
 
 interface I {
     list: any[],
@@ -36,6 +37,7 @@ const Direct:FC<I> = ({
 }) => {
     const {inView, ref} = useInView()
     const [loadMore, setLoadMore] = useState<boolean>(false)
+    const [infoModal, setInfoModal] = useState(false)
 
     const [paddingTop, setPaddingTop] = useState(0)
     const exRef = useRef<HTMLDivElement>(null)
@@ -65,6 +67,7 @@ const Direct:FC<I> = ({
     if(type === 'chat') {
         return (
             <div className={`${styles.wrapper} ${styles.wrapper_chat}`}>
+                
                 <div className={styles.users} ref={exRef}>
                     {
                         (selfUser && otherUser) && (
@@ -82,9 +85,9 @@ const Direct:FC<I> = ({
                     
                     {
                         list?.map((item,index) => (
-                            <div className={styles.item}>
+                            <div className={styles.item} key={index}>
                                 <ChatMessage
-                                    key={index}
+                                    
                                     id={item.id}
                                     avatar={item?.sender_user?.avatar_url_thumbnail}
                                     status={item?.is_read_by_recepient === 1 ? 'read' : 'unread'}
@@ -137,7 +140,7 @@ const Direct:FC<I> = ({
                 <div className={`${styles.mail} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`, paddingBottom: chatBottomPadding}}>
                     {
                         list?.map((i, index) => (
-                            <div className={styles.item}>
+                            <div key={index}  className={styles.item}>
                                 <MailMessage {...i}/>
                             </div>
                         ))

@@ -25,7 +25,13 @@ const endpoints = {
     getWork: `${API_PATH}operators/working-shifts`,
 
     workStart: `${API_PATH}operators/working-shifts/start`,
-    workStop: `${API_PATH}operators/working-shift/stop`
+    workStop: `${API_PATH}operators/working-shifts/stop`,
+
+
+    reports: `${API_PATH}operators/reports`,
+    logs: `${API_PATH}operators/logs`,
+    fault: `${API_PATH}operators/fines`,
+
 
 }
 

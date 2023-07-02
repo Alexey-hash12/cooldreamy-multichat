@@ -6,9 +6,10 @@ import { useAppSelector, useAppDispatch } from '../../hooks/reduxHooks';
 import { useState } from 'react';
 import ApiService from '../../service/ApiService';
 import { pusherConfigType } from '../../utils/getChannels';
-import { main_updateAdminId, main_updateNewMessage, main_updateSocket } from '../../store/slices/mainSlice';
+import { main_updateAdminId, main_updateNewChatMessage, main_updateNewMailMessage, main_updateSocket } from '../../store/slices/mainSlice';
 import getChannels from '../../utils/getChannels';
 import socketEvents from '../../utils/socketEvents';
+
 
 const service = new ApiService()
 
@@ -51,6 +52,7 @@ const MainLayout = ({children}: {children: ReactNode}) => {
             //     console.log(res)
             // })
 		}
+		console.log(token)
 	}, [token])
 
 	useEffect(() => {
@@ -59,20 +61,24 @@ const MainLayout = ({children}: {children: ReactNode}) => {
 			dispatch(main_updateSocket(channels))
 			channels.subscribed(() => {
 				// notify('Соединение установлено', 'SUCCESS')
-				alert('Соединение установлено')
+				// notify('Соединение установлено', 'SUCCESS')
 			})
 		}
 	}, [pusherConfig, adminId, socketChanel])
+
 	
 
 
 	useEffect(() => {
 		if(socketChanel) {
-			console.log(socketChanel)
-			socketChanel?.listen(socketEvents.eventNewMessage, (data: any) => {
+			socketChanel?.listen(socketEvents.eventNewChatMessage, (data: any) => {
 				console.log(data)
-				dispatch(main_updateNewMessage(data))
+				dispatch(main_updateNewChatMessage(data))
 				// notify
+			})
+			socketChanel?.listen(socketEvents.eventNewMailMessage, (data: any) => {
+				console.log(data)
+				dispatch(main_updateNewMailMessage(data))
 			})
 		}
 	}, [socketChanel])

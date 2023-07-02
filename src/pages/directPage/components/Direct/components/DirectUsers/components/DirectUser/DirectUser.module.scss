@@ -3,7 +3,10 @@
     background-color: #2E2E4F;
     border-radius: 8px;
     overflow: hidden;
-
+    display: flex;
+    align-items: flex-start;
+    // justify-content: space-around;
+    
     .main {
         display: flex;
         width: 100%;
@@ -34,5 +37,14 @@
                 }
             }
         }
+    }
+
+    .action {
+        // width: 30px;
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+        // flex: 0 0 auto;
+        margin-left: 10px;
     }
 }

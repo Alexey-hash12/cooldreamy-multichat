@@ -1,0 +1,36 @@
+.wrapper {
+
+    .tabs {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .tab {
+            width: 200px;
+            border: 1px solid #7D6AF0;
+            transition: all .3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            padding: 7.5px;
+            background-color: #252548;
+
+            &:first-child {
+                border-radius: 4px 0 0 4px;
+            }
+            &:last-child {
+                border-radius: 0 4px 4px 0;
+            }
+
+            &:active {
+                transform: scale(1);
+            }
+        }
+
+        .tab.active {
+            background-color: #7D6AF0;
+        }
+    }
+}

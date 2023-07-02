@@ -1,5 +1,7 @@
 const socketEvents = {
-    eventNewMessage: '.new-operator-chat-message-event',
+    eventNewChatMessage: '.new-operator-chat-message-event',
+    eventNewMailMessage: '.operator-new-letter-message-event',
+
     eventReadMessage: '.new-operator-chat-message-event'
 }
 
