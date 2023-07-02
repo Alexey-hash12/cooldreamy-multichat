@@ -16,7 +16,7 @@ import { sortingChatList, sortingDialogList } from '../../utils/sorting';
 const service = new ApiService()
 
 const DirectPage = () => {
-    const {token} = useAppSelector(s => s.mainReducer)
+    const {token, socketChanel, newMessage} = useAppSelector(s => s.mainReducer)
     const queryes = useSearchParams()
     const [type, setType] = useState<any>('chat') // chat, mail
     const [id, setId] = useState<any>()
@@ -237,6 +237,23 @@ const DirectPage = () => {
         }
     }
 
+
+
+    //socket action
+    useEffect(() => {
+        if(socketChanel) {
+            if(type === 'chat') {
+                if(newMessage) {
+                    console.log(newMessage)
+                }
+            }
+            if(type === 'mail') {
+                
+            }
+        }
+    }, [newMessage, socketChanel, id, type])
+
+
     return (
         <div className={styles.wrapper}>
             <DirectLayout>
@@ -249,6 +266,7 @@ const DirectPage = () => {
                                 total={inboxTotal}
                                 type={type}
 
+                                currentId={id}
                                 searchValue={inboxSearch}
                                 setSearchValue={(setInboxSearch)}
                                 />

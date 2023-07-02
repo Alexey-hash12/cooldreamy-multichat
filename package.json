@@ -15,6 +15,7 @@
     "@types/react-dom": "^18.2.5",
     "@types/react-lines-ellipsis": "^0.15.1",
     "antd": "^5.6.1",
+    "laravel-echo": "^1.15.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "pusher-js": "^8.2.0",

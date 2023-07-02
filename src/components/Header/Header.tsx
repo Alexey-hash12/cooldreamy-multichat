@@ -1,10 +1,24 @@
 import IconButton from '../IconButton/IconButton';
 import styles from './Header.module.scss';
 import {IoMdNotificationsOutline} from 'react-icons/io';
+import ApiService from '../../service/ApiService';
+import { useAppSelector } from '../../hooks/reduxHooks';
+import {useEffect} from 'react';
 
+
+const service = new ApiService()
 
 const Header = () => {
+    const {token} = useAppSelector(s => s.mainReducer)
 
+    useEffect(() => {
+        if(token) {
+            service.getWork(token).then(res => {
+                console.log(res)
+            })
+        }
+    }, [token])
+    
 
     return (
         <div className={styles.wrapper}>

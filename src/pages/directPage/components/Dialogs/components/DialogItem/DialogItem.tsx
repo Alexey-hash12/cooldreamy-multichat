@@ -9,7 +9,8 @@ import DialogItemMail from './components/DialogItemMail/DialogItemMail';
 import DialogItemChat from './components/DialogItemChat/DialogItemChat';
 import chatMessageTypeVariants from '../../../../../../utils/messageVariants';
 import LinesEllipsis from 'react-lines-ellipsis'
-
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 const DialogItem = (props: any) => {
     const {
         name,
@@ -17,11 +18,15 @@ const DialogItem = (props: any) => {
         id,
         avatar_url_thumbnail,
         online,
+        
     } = props?.other_user
     const {
+        self_user,
         last_message,
-        type_of_model
+        type_of_model,
+        currentId
     } = props
+    const nav = useNavigate();
 
 
     const switchChatType = (type?: string) => {

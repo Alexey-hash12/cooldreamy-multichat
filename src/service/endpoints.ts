@@ -19,6 +19,14 @@ const endpoints = {
     getStickers: `${API_PATH}get_stickers`,
     getGifts: `${API_PATH}get_gifts`,
 
+    getSelf: `${API_PATH}operators/me`,
+
+
+    getWork: `${API_PATH}operators/working-shifts`,
+
+    workStart: `${API_PATH}operators/working-shifts/start`,
+    workStop: `${API_PATH}operators/working-shift/stop`
+
 }
 
 

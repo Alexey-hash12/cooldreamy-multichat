@@ -13,7 +13,8 @@ interface I {
     total?: number,
     setPage?:(...args: any[]) => any,
     setSearchValue: (...args: any[]) => any,
-    searchValue: string
+    searchValue: string,
+    currentId?:number | string
 }
 
 
@@ -23,7 +24,8 @@ const Dialogs:FC<I> = ({
     type,
     setPage,
     searchValue,
-    setSearchValue
+    setSearchValue,
+    currentId
 }) => {
     const {inView, ref} = useInView()
     const nav = useNavigate()
@@ -59,7 +61,7 @@ const Dialogs:FC<I> = ({
             <div className={styles.list}>
                 {
                     list?.map(i => (
-                        <div className={styles.item}><DialogItem {...i}/></div>
+                        <div className={styles.item}><DialogItem {...i} currentId={currentId}/></div>
                     ))
                 }
                  {

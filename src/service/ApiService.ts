@@ -163,6 +163,12 @@ class ApiService {
         }
     }
 
+    // sendMailMessage = async (token: any, id: number | string, body: {text: string}) => {
+    //     try {
+    //         let res = await fetch(`${API_PATH}ope`)
+    //     }
+    // }
+
 
     sendChatMessage = async (token: any, id: number | string, body: {text: string}) => {
         try {
@@ -237,6 +243,71 @@ class ApiService {
                     ...headers,
                     'Authorization': `Bearer ${token}`
                 },
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    getSelf = async (token:any) => {
+        try {
+            let res = await fetch(endpoints.getSelf, {
+                method: "GET",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                },
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    getWork = async (token: any) => {
+        try {
+            let res = await fetch(endpoints.getWork, {
+                method: "GET",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const r = await checkAuth(res)
+            return await r;
+        }catch(err) {
+            console.log(err)
+        }
+    }
+
+    workStart = async (token: any) => {
+        try {
+            let res = await fetch(endpoints.workStart, {
+                method: 'POST',
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    workStop = async (token: any, id: number | string) => {
+        try {
+            let res = await fetch(endpoints.workStop, {
+                method: 'POST',
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({id})
             })
             const r = await checkAuth(res)
             return await r;

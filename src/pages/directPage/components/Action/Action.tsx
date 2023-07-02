@@ -86,7 +86,9 @@ const Action:FC<I> = ({
                 }
             }
             if(type === 'mail') {
-
+                if(text && id) {
+                 
+                }
             }
         }
     }

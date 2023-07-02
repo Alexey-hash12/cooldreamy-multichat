@@ -2,44 +2,80 @@ import styles from './MainLayout.module.scss';
 import Header from '../Header/Header';
 import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/reduxHooks';
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxHooks';
 import { useState } from 'react';
 import ApiService from '../../service/ApiService';
+import { pusherConfigType } from '../../utils/getChannels';
+import { main_updateAdminId, main_updateNewMessage, main_updateSocket } from '../../store/slices/mainSlice';
+import getChannels from '../../utils/getChannels';
+import socketEvents from '../../utils/socketEvents';
 
 const service = new ApiService()
 
 const MainLayout = ({children}: {children: ReactNode}) => {
     const {pathname} = useLocation()
-    const {token} = useAppSelector(s => s.mainReducer)
-    // const [pusherConfig, setPusherConfig] = useState<pusherConfigType | null>(null)
+    const {token, socketChanel, adminId} = useAppSelector(s => s.mainReducer)
+	const dispatch = useAppDispatch()
+	const [pusherConfig, setPusherConfig] = useState<pusherConfigType | null>(null)
 
-    // useEffect(() => {
-	// 	if(token) {
-	// 		setPusherConfig(
-	// 			{
-	// 				key: 's3cr3t',
-	// 				wsHost: 'api.cooldreamy.com',
-	// 				authEndpoint: 'https://api.cooldreamy.com/broadcasting/auth',
-	// 				cluster: 'mt1',
-	// 				encrypted: true,
-	// 				forceTLS: false,
-	// 				wsPort: 6001,
-	// 				wssPort: 6001,
-	// 				disableStats: true,
-	// 				enabledTransports: ['ws', 'wss'],
-	// 				auth: {
-	// 					headers: {
-	// 						Authorization: 'Bearer ' + token,
-	// 					}
-	// 				}
-	// 			}
-	// 		)
-    //         service.getMyProfile(token).then(res => {
-    //             console.log(res)
-    //         })
-	// 	}
-	// }, [token])
-    
+
+	useEffect(() => {
+		token && service.getSelf(token).then(res => {
+			if(res) dispatch(main_updateAdminId(res))
+		})
+	}, [token])
+
+
+    useEffect(() => {
+		if(token) {
+			setPusherConfig(
+				{
+					key: 's3cr3t',
+					wsHost: 'newapi.soultri.site',
+					authEndpoint: 'https://newapi.soultri.site/broadcasting/auth',
+					cluster: 'mt1',
+					encrypted: true,
+					forceTLS: false,
+					wsPort: 6001,
+					wssPort: 6001,
+					disableStats: true,
+					enabledTransports: ['ws', 'wss'],
+					auth: {
+						headers: {
+							Authorization: 'Bearer ' + token,
+						}
+					}
+				}
+			)
+            // service.getMyProfile(token).then(res => {
+            //     console.log(res)
+            // })
+		}
+	}, [token])
+
+	useEffect(() => {
+		if(pusherConfig && adminId && !socketChanel) {
+			const channels = getChannels(pusherConfig).private(`App.User.${adminId}`);
+			dispatch(main_updateSocket(channels))
+			channels.subscribed(() => {
+				// notify('Соединение установлено', 'SUCCESS')
+				alert('Соединение установлено')
+			})
+		}
+	}, [pusherConfig, adminId, socketChanel])
+	
+
+
+	useEffect(() => {
+		if(socketChanel) {
+			console.log(socketChanel)
+			socketChanel?.listen(socketEvents.eventNewMessage, (data: any) => {
+				console.log(data)
+				dispatch(main_updateNewMessage(data))
+				// notify
+			})
+		}
+	}, [socketChanel])
 
     
     return (
