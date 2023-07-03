@@ -1,5 +1,7 @@
 .wrapper.active {
     border: 1px solid red;
+    background: rgba(125, 106, 240, 0.30);
+    
 }
 
 .wrapper {
@@ -9,7 +11,7 @@
     border-radius: 8px;
     display: flex;
     transition: all .3s ease;
-    
+    cursor: pointer;
 
     .avatar {
 

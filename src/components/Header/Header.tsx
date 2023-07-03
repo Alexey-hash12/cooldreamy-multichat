@@ -77,7 +77,7 @@ const Header = () => {
         <div className={styles.wrapper}>
             <div className={styles.in}>
                 <div className={styles.tabs}>
-                    <button className={`${styles.tabs_btn} ${styles.active}`}></button>
+                    <button onClick={() => nav(`/direct?type=chat`)} className={`${styles.tabs_btn} ${styles.active}`}></button>
                     <button className={styles.tabs_btn}></button>
                 </div>
                 <div className={styles.main}>

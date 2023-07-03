@@ -88,6 +88,7 @@ const DirectPage = () => {
         if(token && inboxPage) {
             service.getInbox(token, {page:inboxPage, per_page: 10, search: inboxSearch}).then(res => {
                 setInboxTotal(res?.total)
+                console.log(res?.data)
                 if(inboxPage === 1) {
                     setInbox(res?.data)
                 } else {
@@ -251,22 +252,23 @@ const DirectPage = () => {
                     //     messageBody: newChatMessage?.chat_list_item?.chat?.last_message, 
                     //     dialogBody: newChatMessage?.chat_list_item?.chat
                     // })
+                    console.log(newChatMessage?.chat_message)
                     onUpdateChat && onUpdateChat({
                         messageBody: newChatMessage?.chat_message, 
-                        dialogBody: newChatMessage?.chat_list_item
+                        dialogBody: {...newChatMessage?.chat_list_item, other_user: newChatMessage?.chat_message?.sender_user, self_user: newChatMessage?.chat_message?.recepient_user}
                     })
                 }
             }
             if(type === 'mail') {
                 if(newMailMessage) {
-                    // console.log(newMailMessage)
+                    console.log(newMailMessage)
                     // onUpdateChat && onUpdateChat({
                     //     messageBody: newMailMessage?.letter_list_item?.letter?.last_message, 
                     //     dialogBody: newMailMessage?.letter_list_item?.letter
                     // }) 
                     onUpdateChat && onUpdateChat({
                         messageBody: newMailMessage?.letter_message, 
-                        dialogBody: newMailMessage?.letter_list_item 
+                        dialogBody: {...newMailMessage?.letter_list_item, other_user: newChatMessage?.chat_message?.sender_user, self_user: newChatMessage?.chat_message?.recepient_user}
                     }) 
                 }
             }

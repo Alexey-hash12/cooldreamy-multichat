@@ -61,7 +61,7 @@ const Dialogs:FC<I> = ({
             <div className={styles.list}>
                 {
                     list?.map(i => (
-                        <div className={styles.item}><DialogItem {...i} currentId={currentId}/></div>
+                        <div className={styles.item}><DialogItem {...i} currentId={currentId} type={type}/></div>
                     ))
                 }
                  {

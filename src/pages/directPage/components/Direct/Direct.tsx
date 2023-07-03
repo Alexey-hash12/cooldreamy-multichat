@@ -81,7 +81,7 @@ const Direct:FC<I> = ({
                 {/* <div className={styles.users_pl}>
                     <DirectUsers/>
                 </div> */}
-                <div className={`${styles.chat} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`, paddingBottom: chatBottomPadding}}>
+                <div className={`${styles.chat} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`, paddingBottom: chatBottomPadding, paddingTop}}>
                     
                     {
                         list?.map((item,index) => (
@@ -137,7 +137,7 @@ const Direct:FC<I> = ({
                         )
                     }
                 </div>
-                <div className={`${styles.mail} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`, paddingBottom: chatBottomPadding}}>
+                <div className={`${styles.mail} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`, paddingBottom: chatBottomPadding, paddingTop}}>
                     {
                         list?.map((i, index) => (
                             <div key={index}  className={styles.item}>

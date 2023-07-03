@@ -15,7 +15,7 @@ const DialogItem = (props: any) => {
     const {
         name,
         age,
-        id,
+        
         avatar_url_thumbnail,
         online,
         
@@ -24,9 +24,12 @@ const DialogItem = (props: any) => {
         self_user,
         last_message,
         type_of_model,
-        currentId
+        currentId,
+        type,
+        id
     } = props
     const nav = useNavigate();
+    
 
 
     const switchChatType = (type?: string) => {
@@ -61,7 +64,7 @@ const DialogItem = (props: any) => {
 
 
     return (
-        <div className={`${styles.wrapper}`}>
+        <div onClick={() => nav(`/direct?type=${type_of_model === 'letter' ? 'mail' : 'chat'}&id=${id}&self_id=${self_user?.id}`)} className={`${styles.wrapper}`}>
             <div className={styles.avatar}>
                 <Avatar
                     image={avatar_url_thumbnail}
@@ -79,7 +82,7 @@ const DialogItem = (props: any) => {
                         </Col>
                         <Col span={12}>
                             <div className={styles.id}>
-                            id {id}
+                            id {props?.other_user?.id}
                             </div>
                         </Col>
                     </Row>
