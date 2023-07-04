@@ -16,7 +16,9 @@ const Avatar:FC<IAvatar> = ({
             style={{width: size, height: size}}
             className={`${styles.wrapper} ${isNewAction ? styles.new : ''} ${isRound ? styles.round : ''}`}>
             <div className={styles.avatar}>
-                <img src={image} alt="" />
+                {
+                    image && <img src={image} alt="" />
+                }
             </div>
         </div>
     )

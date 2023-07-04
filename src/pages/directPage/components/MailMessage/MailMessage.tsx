@@ -53,9 +53,9 @@ const MailMessage:FC<any> = (props) => {
                                 <FancyboxWrapper>
                                     <div className={styles.media}>
                                         {images?.map((item: any, index: number) => (
-                                            item?.image && (
-                                                <a data-fancybox="gallery" href={item.image} className={styles.item} key={index}>
-                                                    <img src={item?.thumbnail} alt="" />
+                                            item?.image_url && (
+                                                <a data-fancybox="gallery" href={item.image_url} className={styles.item} key={index}>
+                                                    <img src={item?.thumbnail_url} alt="" />
                                                 </a>
                                             ) 
                                         ))}

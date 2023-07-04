@@ -167,7 +167,7 @@ class ApiService {
         }
     }
 
-    sendMailMessage = async (token: any, id: number | string, body: {text: string}) => {
+    sendMailMessage = async (token: any, id: number | string, body: {text?: string, images?: any[]}) => {
         try {
             let res = await fetch(`${API_PATH}operators/letter/${id}/send/message`, {
                 method: "POST",

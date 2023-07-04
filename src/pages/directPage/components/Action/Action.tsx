@@ -154,7 +154,15 @@ const Action:FC<I> = ({
                 })
             }
             if(type === 'mail') {
-
+                service.sendMailMessage(token, id, {text, images: images?.map(i => i.id)}).then(res => {
+                    console.log(res)
+                    if(res?.id) {
+                        onUpdateChat && onUpdateChat({messageBody: {...res?.last_message, sender_user: res?.self_user}, dialogBody: res})
+                        setMediaModal(false)
+                    }
+                }).finally(() => {
+                    setText('')
+                })
             }
         }
         

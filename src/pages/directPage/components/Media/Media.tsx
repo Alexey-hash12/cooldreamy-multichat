@@ -44,7 +44,10 @@ const Media:FC<I> = ({
     const [activeTab, setActiveTab] = useState('1')
     const [selected, setSelected] = useState<any[]>([])
     const [mediaList, setMediaList] = useState<any[]>([])
+    const [page, setPage] = useState(0)
+
     
+
     useEffect(() => {
         if(queryes) {
             setSeldId(queryes[0].get('self_id'))
@@ -86,22 +89,27 @@ const Media:FC<I> = ({
         
     }
 
-    useEffect(() => {
-        console.log(selected)
-    }, [selected])
+  
 
     const getMedia = () => {
         if(token && selfId) {
             service.getMedia(token, selfId).then(res => {
-                // console.log(res)
-                setMediaList(res?.profile_photo)
+                setMediaList(res?.profile_photo?.data)
+                // console.log(res?.profile_photo)
             })
         }
     }
 
     useEffect(() => {
-        getMedia()
-    }, [selfId, token])
+        if(isOpen) {
+            getMedia()
+        } else {
+            setMediaList([])
+            setSelected([])
+            setActiveTab('1')
+            setPage(1)
+        }
+    }, [selfId, token, isOpen])
     
 
 
@@ -150,7 +158,7 @@ const Media:FC<I> = ({
                 <Row gutter={[12,12]}>
                     {
                         activeTab === '1' && (
-                            mediaList?.map((i, index) => (
+                            mediaList?.length > 0 && mediaList?.map((i, index) => (
                                 <Col span={6}>
                                     <div onClick={() => onSelectMedia(i)} className={`${styles.item} ${selected?.find(f => f?.id == i?.id) ? styles.active : ''}`}>
                                         {selected?.find(f => f?.id == i?.id) && <div className={styles.selected}><BsCheckLg/></div>}
