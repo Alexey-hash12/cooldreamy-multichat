@@ -100,6 +100,7 @@
                 border-radius: 100%;
                 color: #fff;
                 margin: 0 3px;
+                filter: grayscale(1);
             }
 
             .action_btn.aqua {
@@ -113,6 +114,10 @@
             }
             .action_btn.blue {
                 background-color: #7D6AF0;
+            }
+
+            .action_btn.active {
+                filter: grayscale(0)
             }
         }
     }

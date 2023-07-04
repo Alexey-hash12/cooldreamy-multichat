@@ -11,18 +11,25 @@ import { useSearchParams } from 'react-router-dom';
 import { IUser } from '../../models/IUser';
 import Action from './components/Action/Action';
 import { sortingChatList, sortingDialogList, sortingMailChatList } from '../../utils/sorting';
+import { useDebounce } from 'usehooks-ts';
 
 
 const service = new ApiService()
 
 const DirectPage = () => {
-    const {token, socketChanel, newChatMessage, newMailMessage} = useAppSelector(s => s.mainReducer)
+    const {token, socketChanel, newChatMessage, newMailMessage, deleteInbox, newInbox} = useAppSelector(s => s.mainReducer)
     const queryes = useSearchParams()
     const [type, setType] = useState<any>('chat') // chat, mail
     const [id, setId] = useState<any>()
     const [selfUserId, setSelfUserId] = useState<any>()
 
     const [chatBottomPadding, setChatBottomPadding] = useState<number>(70)
+
+
+    //loading
+    const [loadRooms, setLoadRooms] = useState(false)
+    const [loadInbox, setLoadInbox] = useState(false)
+
 
     //data
     const [rooms, setRooms] = useState<any[]>([])
@@ -41,6 +48,8 @@ const DirectPage = () => {
     const [inboxTotal, setInboxTotal] = useState<any>()
 
     const [chatsSearch, setChatsSearch] = useState<string>('')
+    const chatSearchDebounced = useDebounce<string>(chatsSearch, 1000)
+
     const [inboxSearch, setInboxSearch] = useState<string>('')
 
     const [other_user, setother_user] = useState<any>()
@@ -57,27 +66,36 @@ const DirectPage = () => {
 
 
 
+    useEffect(() => console.log(chatSearchDebounced), [chatSearchDebounced])
+    
+
+
     const getRooms = () => {
         if(token && chatsPage) {
             if(type === 'chat') {
-                service.getChats(token, {page: chatsPage, per_page: 5, search: chatsSearch, filter_type: chatsFilter}).then(res => {
+                chatsPage === 1 && setLoadRooms(true)
+                service.getChats(token, {page: chatsPage, per_page: 5, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
                     setChatsTotal(res?.total)
                     if(chatsPage === 1) {
                         setRooms(res?.data)
                     } else {
                         setRooms(s => [...s, ...res?.data])
                     }
+                }).finally(() => {
+                    setLoadRooms(false)
                 })
             }
             if(type === 'mail') {
-                service.getMails(token, {page: chatsPage, per_page: 5, search: chatsSearch, filter_type: chatsFilter}).then(res => {
+                chatsPage === 1 && setLoadRooms(true)
+                service.getMails(token, {page: chatsPage, per_page: 5, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
                     setChatsTotal(res?.total)
-                    console.log(res)
                     if(chatsPage === 1) {
                         setRooms(res?.data)
                     } else {
                         setRooms(s => [...s, ...res?.data])
                     }
+                }).finally(() => {
+                    setLoadRooms(false)
                 })
             }
             
@@ -143,7 +161,7 @@ const DirectPage = () => {
     
     useEffect(() => {
         setChatsPage(1)
-    }, [chatsSearch])
+    }, [chatSearchDebounced])
 
     useEffect(() => {
         setInboxPage(1)
@@ -153,17 +171,11 @@ const DirectPage = () => {
         setDialogPage(1)
     }, [type, id])
 
-    useEffect(() => {
-        setChatsPage(1)
-    }, [type, chatsFilter])
-
-    useEffect(() => {
-        getRooms()
-    }, [token, type, chatsPage, chatsSearch, chatsFilter])
+    
 
     useEffect(() => {
         getInbox()
-    }, [token, type, inboxPage, inboxSearch])
+    }, [token, inboxPage, inboxSearch])
 
     useEffect(() => {
         getDialog()
@@ -242,17 +254,61 @@ const DirectPage = () => {
     }
 
 
+    useEffect(() => {
+        if(inbox?.length > 0) {
+            if(deleteInbox) {
+                console.log(deleteInbox)
+                
+                const foundIndex = inbox.findIndex(i => i.id == deleteInbox?.id && i.model_type == deleteInbox?.type)
+
+                console.log(foundIndex)
+                
+                if(foundIndex !== -1) {
+                    setInbox(s => {
+                        const m = [...s];
+                        const rm = m.splice(foundIndex, 1)
+                        return [...m]
+                    })
+                }
+            }
+            if(newInbox) {
+                const foundItem = inbox.find(i => i.id == deleteInbox?.id && i.model_type == deleteInbox?.type)
+                const foundIndex = inbox.findIndex(i => i.id == deleteInbox?.id && i.model_type == deleteInbox?.type)
+                if(foundItem && foundIndex !== -1) {
+                    setInbox(s => {
+                        const m = [...s];
+                        const rm = m.splice(foundIndex, 1, foundItem)
+                        return [...m]
+                    })
+                } else {
+                    setInbox(s => [newInbox, ...s])
+                }
+            }
+        }   
+    }, [inbox, deleteInbox, newInbox])
+
+
+    
+    useEffect(() => {
+        getRooms()
+    }, [token, chatsPage, chatsFilter, chatSearchDebounced, type])
+
+    
+    useEffect(() => {
+        setChatsPage(1)
+    }, [chatsFilter, chatSearchDebounced, type])
+
 
     //socket action
     useEffect(() => {
         if(socketChanel) {
+
             if(type === 'chat') {
                 if(newChatMessage) {
                     // onUpdateChat && onUpdateChat({
                     //     messageBody: newChatMessage?.chat_list_item?.chat?.last_message, 
                     //     dialogBody: newChatMessage?.chat_list_item?.chat
                     // })
-                    console.log(newChatMessage?.chat_message)
                     onUpdateChat && onUpdateChat({
                         messageBody: newChatMessage?.chat_message, 
                         dialogBody: {...newChatMessage?.chat_list_item, other_user: newChatMessage?.chat_message?.sender_user, self_user: newChatMessage?.chat_message?.recepient_user}
@@ -261,7 +317,6 @@ const DirectPage = () => {
             }
             if(type === 'mail') {
                 if(newMailMessage) {
-                    console.log(newMailMessage)
                     // onUpdateChat && onUpdateChat({
                     //     messageBody: newMailMessage?.letter_list_item?.letter?.last_message, 
                     //     dialogBody: newMailMessage?.letter_list_item?.letter
@@ -317,7 +372,8 @@ const DirectPage = () => {
                     </Col>
                     <Col span={7}>
                         <div className={`${styles.panel} custom-scroll-vertical`}>
-                            <Rooms
+                            <Rooms  
+                                getRooms={getRooms}
                                 list={rooms}
                                 type={type}
                                 total={chatsTotal}
@@ -328,6 +384,8 @@ const DirectPage = () => {
 
                                 filter={chatsFilter}
                                 setFilter={setChatsFilter}
+                                
+                                loading={loadRooms}
                                 />
                         </div>
                     </Col>
@@ -335,6 +393,10 @@ const DirectPage = () => {
             </DirectLayout>
         </div>
     )
+
+
+
+    
 }
 
 export default DirectPage;

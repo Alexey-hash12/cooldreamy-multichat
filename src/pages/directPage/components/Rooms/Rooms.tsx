@@ -13,7 +13,8 @@ import { useDebounce } from 'usehooks-ts';
 import { useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import {PulseLoader} from 'react-spinners'
-
+import Skeleton from './components/Skeleton/Skeleton';
+import Empty from '../../../../components/Empty/Empty';
 
 interface I {
     list: any[],
@@ -24,7 +25,16 @@ interface I {
     searchValue: string,
 
     filter: 'online' | 'premium' | 'payed' | 'super_payed' | '',
-    setFilter: (...args: any[]) => any
+    setFilter: (...args: any[]) => any,
+
+    loading?: boolean,
+
+
+    getRooms?: (body: {
+        argFilter?: any,
+        argPage?: any,
+        argSearch?: any,
+    }) => any
 }
 
 const Rooms:FC<I> = ({
@@ -36,6 +46,9 @@ const Rooms:FC<I> = ({
     searchValue,
     filter,
     setFilter,
+
+    loading,
+    getRooms
 }) => {
     const {inView, ref} = useInView()
     const nav = useNavigate()
@@ -58,12 +71,24 @@ const Rooms:FC<I> = ({
     }, [inView, loadMore, setPage, list])
 
 
+    const onSelectFilter = (value: any) => {
+        if(value === filter) {
+            setFilter('')
+        } else {
+            setFilter(value)
+        }
+    }
 
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.tabs}>
-                <button onClick={() => nav('/direct?type=chat')} className={`${styles.tab} ${type === 'chat' ? styles.active : ''}`}>
+                <button 
+                    onClick={() => {
+                        nav('/direct?type=chat')
+                        
+                    }}  
+                    className={`${styles.tab} ${type === 'chat' ? styles.active : ''}`}>
                     <div className={styles.label}>
                         <div className={styles.icon}><IoChatbubblesOutline/></div>
                         <div className={styles.title}>Чат</div>
@@ -87,20 +112,29 @@ const Rooms:FC<I> = ({
             </div>
             <div className={styles.action}>
                 <div className={styles.part}>
-                    <button onClick={() => setFilter('online')} className={`${styles.action_btn} ${styles.aqua}`}><FaHeadphonesAlt/></button>
-                    <button onClick={() => setFilter('premium')} className={`${styles.action_btn} ${styles.yellow}`}><GiRoundStar/></button>
-                    <button onClick={() => setFilter('payed')} className={`${styles.action_btn} ${styles.green}`}><TbMoneybag/></button>
+                    <button onClick={() => onSelectFilter('online')} className={`${styles.action_btn} ${styles.aqua} ${filter === 'online' ? styles.active :''}`}><FaHeadphonesAlt/></button>
+                    <button onClick={() => onSelectFilter('premium')} className={`${styles.action_btn} ${styles.yellow} ${filter === 'premium' ? styles.active : ''}`}><GiRoundStar/></button>
+                    <button onClick={() => onSelectFilter('payed')} className={`${styles.action_btn} ${styles.green} ${filter === 'payed' ? styles.active : ''}`}><TbMoneybag/></button>
                 </div>
                 <div className={styles.part}>
-                    <button onClick={() => setFilter('super_payed')} className={`${styles.action_btn} ${styles.blue}`}><TbMoneybag/></button>
+                    <button onClick={() => onSelectFilter('super_payed')} className={`${styles.action_btn} ${styles.blue} ${filter === 'super_payed' ? styles.active : ''}`}><TbMoneybag/></button>
                 </div>
             </div>
             <div className={styles.list}>
                 {
-                    list?.map((i,index) => (
-                        <div key={i.id} className={styles.item}><RoomItem {...i} type={type}/></div>
-                    ))
+                    loading ? (
+                        <Skeleton/>
+                    ) : (
+                        list?.length > 0 ? (
+                            
+                                list?.map((i,index) => (
+                                    <div key={index} className={styles.item}><RoomItem {...i} type={type}/></div>
+                                ))
+                            
+                        ) : <Empty/>
+                    )
                 }
+                
                 {
                     list && list?.length > 0 && (
                         loadMore && (

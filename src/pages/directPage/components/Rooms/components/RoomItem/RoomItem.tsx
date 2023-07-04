@@ -33,7 +33,7 @@ const RoomItem:FC<any> = ({
  
     return (
         <div className={`${styles.wrapper} ${id == activeId ? styles.active : ''}`} onClick={() => nav(`/direct?type=${type}&id=${id}&self_id=${self_user.id}`)}>
-            <div className={styles.test}>{updated_at}</div>
+            <div className={styles.test}>{id}</div>
             <div className={styles.part}>
                 <Avatar
                     isNewAction={self_user?.online === 1}

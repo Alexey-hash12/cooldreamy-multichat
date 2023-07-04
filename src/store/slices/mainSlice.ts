@@ -11,7 +11,9 @@ const mainSlice = createSlice({
         main_updateAdminId: (state,action) => {state.adminId = action.payload},
         main_updateSocket: (state, action) => {state.socketChanel = action.payload},
         main_updateNewChatMessage: (state, action) => {state.newChatMessage = action.payload},
-        main_updateNewMailMessage: (state, action) => {state.newMailMessage = action.payload}
+        main_updateNewMailMessage: (state, action) => {state.newMailMessage = action.payload},
+        main_updateInbox: (state, action) => {state.newInbox = action.payload},
+        main_deleteInbox: (state, action) => {state.deleteInbox = action.payload}
     },
 })
 
@@ -27,5 +29,7 @@ export const {
     main_updateSocket,
     
     main_updateNewChatMessage,
-    main_updateNewMailMessage
+    main_updateNewMailMessage,
+    main_updateInbox,
+    main_deleteInbox
 } = actions

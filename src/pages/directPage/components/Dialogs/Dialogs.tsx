@@ -60,8 +60,8 @@ const Dialogs:FC<I> = ({
             </div>
             <div className={styles.list}>
                 {
-                    list?.map(i => (
-                        <div className={styles.item}><DialogItem {...i} currentId={currentId} type={type}/></div>
+                    list?.map((i,index) => (
+                        <div key={index} className={styles.item}><DialogItem {...i} currentId={currentId} type={type}/></div>
                     ))
                 }
                  {

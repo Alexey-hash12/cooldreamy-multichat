@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks/reduxHooks';
 import { useState } from 'react';
 import ApiService from '../../service/ApiService';
 import { pusherConfigType } from '../../utils/getChannels';
-import { main_updateAdminId, main_updateNewChatMessage, main_updateNewMailMessage, main_updateSocket } from '../../store/slices/mainSlice';
+import { main_deleteInbox, main_updateAdminId, main_updateInbox, main_updateNewChatMessage, main_updateNewMailMessage, main_updateSocket } from '../../store/slices/mainSlice';
 import getChannels from '../../utils/getChannels';
 import socketEvents from '../../utils/socketEvents';
 
@@ -72,13 +72,17 @@ const MainLayout = ({children}: {children: ReactNode}) => {
 	useEffect(() => {
 		if(socketChanel) {
 			socketChanel?.listen(socketEvents.eventNewChatMessage, (data: any) => {
-				console.log(data)
 				dispatch(main_updateNewChatMessage(data))
-				// notify
 			})
 			socketChanel?.listen(socketEvents.eventNewMailMessage, (data: any) => {
-				console.log(data)
 				dispatch(main_updateNewMailMessage(data))
+			})
+			socketChanel?.listen(socketEvents.eventDeleteInbox, (data: any) => {
+				dispatch(main_deleteInbox(data))
+			})
+			socketChanel?.listen(socketEvents.eventNewInbox, (data: any) => {
+				console.log(data)
+				dispatch(main_updateInbox(data))
 			})
 		}
 	}, [socketChanel])

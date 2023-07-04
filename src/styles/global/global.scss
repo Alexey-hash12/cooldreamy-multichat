@@ -38,3 +38,22 @@ body {
     line-height: 130%;
 
 }
+
+
+.skeleton {
+    background: rgba(217, 217, 217, 0.05);
+    opacity: 1;
+    animation: skeleton 1.4s linear infinite;
+}
+
+@keyframes skeleton {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: .5;
+    }
+    100% {
+        opacity: 1;
+    }
+}

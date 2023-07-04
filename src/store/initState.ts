@@ -8,7 +8,9 @@ interface IStore {
     adminId: number | string | null,
     socketChanel: PusherPrivateChannel | null,
     newChatMessage: any,
-    newMailMessage: any
+    newMailMessage: any,
+    newInbox: any,
+    deleteInbox: any,
 }
 
 const initState: IStore = {
@@ -16,7 +18,9 @@ const initState: IStore = {
     adminId: null,
     socketChanel: null,
     newChatMessage: null,
-    newMailMessage: null
+    newMailMessage: null,
+    newInbox: null,
+    deleteInbox: null
 }
 
 export default initState;
