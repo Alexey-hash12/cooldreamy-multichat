@@ -33,4 +33,14 @@
             background-color: #7D6AF0;
         }
     }
+    .list {
+        .item {
+            background: rgba(217, 217, 217, 0.03);
+            border-radius: 8px;
+            &:nth-child(odd) {
+                background-color: #1E1E42;
+            }
+
+        }
+    }
 }

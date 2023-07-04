@@ -12,7 +12,7 @@ import { IUser } from '../../models/IUser';
 import Action from './components/Action/Action';
 import { sortingChatList, sortingDialogList, sortingMailChatList } from '../../utils/sorting';
 import { useDebounce } from 'usehooks-ts';
-
+import Media from './components/Media/Media';
 
 const service = new ApiService()
 
@@ -48,9 +48,10 @@ const DirectPage = () => {
     const [inboxTotal, setInboxTotal] = useState<any>()
 
     const [chatsSearch, setChatsSearch] = useState<string>('')
-    const chatSearchDebounced = useDebounce<string>(chatsSearch, 1000)
+    const chatSearchDebounced = useDebounce<string>(chatsSearch, 500)
 
     const [inboxSearch, setInboxSearch] = useState<string>('')
+    const inboxSearchValue = useDebounce<string>(inboxSearch, 500)
 
     const [other_user, setother_user] = useState<any>()
     const [self_user, setself_user] = useState<any>()
@@ -74,7 +75,7 @@ const DirectPage = () => {
         if(token && chatsPage) {
             if(type === 'chat') {
                 chatsPage === 1 && setLoadRooms(true)
-                service.getChats(token, {page: chatsPage, per_page: 5, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
+                service.getChats(token, {page: chatsPage, per_page: 20, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
                     setChatsTotal(res?.total)
                     if(chatsPage === 1) {
                         setRooms(res?.data)
@@ -104,7 +105,8 @@ const DirectPage = () => {
 
     const getInbox = () => {
         if(token && inboxPage) {
-            service.getInbox(token, {page:inboxPage, per_page: 10, search: inboxSearch}).then(res => {
+            inboxPage === 1 && setLoadInbox(true)
+            service.getInbox(token, {page:inboxPage, per_page: 10, search: inboxSearchValue}).then(res => {
                 setInboxTotal(res?.total)
                 console.log(res?.data)
                 if(inboxPage === 1) {
@@ -112,6 +114,8 @@ const DirectPage = () => {
                 } else {
                     setInbox(s => [...s, ...res?.data])
                 }
+            }).finally(() => {
+                setLoadInbox(false)
             })
         }
     }
@@ -165,7 +169,7 @@ const DirectPage = () => {
 
     useEffect(() => {
         setInboxPage(1)
-    }, [inboxSearch])
+    }, [inboxSearchValue])
 
     useEffect(() => {
         setDialogPage(1)
@@ -175,7 +179,7 @@ const DirectPage = () => {
 
     useEffect(() => {
         getInbox()
-    }, [token, inboxPage, inboxSearch])
+    }, [token, inboxPage, inboxSearchValue])
 
     useEffect(() => {
         getDialog()
@@ -253,6 +257,9 @@ const DirectPage = () => {
         }
     }
 
+    useEffect(() => {
+        console.log(messages)
+    }, [messages])
 
     useEffect(() => {
         if(inbox?.length > 0) {
@@ -330,6 +337,13 @@ const DirectPage = () => {
         }
     }, [newChatMessage, newMailMessage, socketChanel, id, type])
 
+    useEffect(() => {
+        if(!id) {
+            setself_user(null)
+            setother_user(null)
+        }
+    }, [id])
+
 
     return (
         <div className={styles.wrapper}>
@@ -345,23 +359,26 @@ const DirectPage = () => {
 
                                 currentId={id}
                                 searchValue={inboxSearch}
-                                setSearchValue={(setInboxSearch)}
+                                setSearchValue={setInboxSearch}
+
+                                loading={loadInbox}
                                 />
                         </div>
                     </Col>
                     <Col span={10}>
                         <div className={styles.panel}>
-                            <Direct
-                                type={type}
-                                list={messages}
-                                total={dialogTotal}
-                                setPage={setDialogPage}
-                                selfUserId={selfUserId}
+                            
+                                <Direct
+                                    type={type}
+                                    list={messages}
+                                    total={dialogTotal}
+                                    setPage={setDialogPage}
+                                    selfUserId={selfUserId}
 
-                                selfUser={self_user}
-                                otherUser={other_user}
-                                chatBottomPadding={chatBottomPadding}
-                                />
+                                    selfUser={self_user}
+                                    otherUser={other_user}
+                                    chatBottomPadding={chatBottomPadding}
+                                    />
                             <Action
                                 onUpdateChat={onUpdateChat}
                                 id={id}

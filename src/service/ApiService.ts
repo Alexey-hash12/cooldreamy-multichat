@@ -412,6 +412,44 @@ class ApiService {
             console.log(err)
         }
     }
+
+
+    getMedia = async (token: any, id: any) => {
+        try {
+            let res = await fetch(`${API_PATH}operators/ancets/${id}/media`, {
+                method: "GET",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                },
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+
+    sendChatMedia = async (token: any, id: any, body: {
+        thumbnail_url: string,
+        image_url: string
+    }) => {
+        try {
+            let res = await fetch(`${API_PATH}operators/chats/${id}/send/image`, {
+                method: "POST",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
 }
 
 export default ApiService;

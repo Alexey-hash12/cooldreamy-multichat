@@ -7,7 +7,7 @@ const TextArea:FC<ITextArea> = (props) => {
 
     return (
         <div className={styles.wrapper}>
-            <textarea {...props} style={{...style, height}}/>
+            <textarea {...props} style={{...style, height}} className='custom-scroll-vertical'/>
         </div>
     )
 }

@@ -27,8 +27,8 @@ const DirectUsers:FC<I> = ({
                 open={infoModal}
                 onCancel={onCloseInfoModal}
                 />
-            <div className={styles.item}><DirectUser {...otherUser} onOpenModal={onOpenInfoModal}/></div>
-            <div className={styles.item}><DirectUser {...selfUser}/></div>
+            <div className={styles.item}><DirectUser isSelf={false}  {...otherUser} onOpenModal={onOpenInfoModal}/></div>
+            <div className={styles.item}><DirectUser isSelf={true}  {...selfUser}/></div>
         </div>
     )
 }

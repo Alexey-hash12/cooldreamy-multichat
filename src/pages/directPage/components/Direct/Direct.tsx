@@ -18,7 +18,7 @@ interface I {
     chatBottomPadding?: number
 
     selfUser?: any,
-    otherUser?:any
+    otherUser?:any,
 }
 
 
@@ -61,7 +61,7 @@ const Direct:FC<I> = ({
         if(exRef?.current) {
             setPaddingTop(exRef?.current.scrollHeight)
         }
-    }, [exRef])
+    }, [exRef, otherUser, selfUser])
 
 
     if(type === 'chat') {
@@ -137,7 +137,7 @@ const Direct:FC<I> = ({
                         )
                     }
                 </div>
-                <div className={`${styles.mail} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`, paddingBottom: chatBottomPadding, paddingTop}}>
+                <div className={`${styles.mail} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`, paddingBottom: chatBottomPadding}}>
                     {
                         list?.map((i, index) => (
                             <div key={index}  className={styles.item}>

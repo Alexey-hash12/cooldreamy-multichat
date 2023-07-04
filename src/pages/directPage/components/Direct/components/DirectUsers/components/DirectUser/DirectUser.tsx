@@ -5,6 +5,7 @@ import UserTitle from '../../../../../../../../components/UserTitle/UserTitle';
 import TextArea from '../../../../../../../../components/TextArea/TextArea';
 import IconButton from '../../../../../../../../components/IconButton/IconButton';
 import {LuEdit} from 'react-icons/lu';
+import { useEffect } from 'react';
 
 
 const DirectUser = (props: any) => {
@@ -17,8 +18,14 @@ const DirectUser = (props: any) => {
         id,
         avatar_url_thumbnail,
         online,
-        onOpenModal
+        onOpenModal,
+        about_self,
+        isSelf,
+        count_letters,
+        count_chats,
+        count_images
     } = props
+
 
     return (
         <div className={styles.wrapper}>
@@ -30,28 +37,50 @@ const DirectUser = (props: any) => {
                             isNewAction={online === 1}
                             size={32}
                             />
-                        <div className={styles.body}>
-                            <div className={styles.part}>
-                                <div className={styles.part_item}><UserTitle username={name} age={age}/></div>
-                                <div className={styles.part_item}>{country}</div>
-                                <div className={styles.part_item}>{state}</div>
-                            </div>
-                            <div className={styles.part}>
-                                <div className={styles.part_item}>id {id}</div>
-                                {/* <div className={styles.part_item}>Цель: <span>Знакомства</span></div> */}
-                                {/* <div className={styles.part_item}>Фото: <span>5</span></div> */}
-                            </div>
-                            <div className={styles.part}>
-                                <div className={styles.part_item}>Кредиты: <span>{credits}</span></div>
-                                {/* <div className={styles.part_item}>Чаты: <span>20</span></div> */}
-                                {/* <div className={styles.part_item}>Письма: <span>10</span></div> */}
-                            </div>
-                        </div>
+                        {
+                            !isSelf ? (
+                                <div className={styles.body}>
+                                    <div className={styles.part}>
+                                        <div className={styles.part_item}><UserTitle username={name} age={age}/></div>
+                                        <div className={styles.part_item}>{country}</div>
+                                        <div className={styles.part_item}>{state}</div>
+                                    </div>
+                                    <div className={styles.part}>
+                                        <div className={styles.part_item}>id {id}</div>
+                                        {/* <div className={styles.part_item}>Цель: <span>Знакомства</span></div> */}
+                                        <div className={styles.part_item}>Фото: <span>0</span></div>
+                                    </div>
+                                    <div className={styles.part}>
+                                        <div className={styles.part_item}>Кредиты: <span>{credits}</span></div>
+                                        <div className={styles.part_item}>Чаты: <span>{count_chats}</span></div>
+                                        <div className={styles.part_item}>Письма: <span>{count_letters}</span></div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className={styles.body}>
+                                    <div className={styles.part}>
+                                        <div className={styles.part_item}><UserTitle username={name} age={age}/></div>
+                                        <div className={styles.part_item}>{country}</div>
+                                        <div className={styles.part_item}>{state}</div>
+                                    </div>
+                                    <div className={styles.part}>
+                                        <div className={styles.part_item}>id {id}</div>
+                                        {/* <div className={styles.part_item}>Цель: <span>Знакомства</span></div> */}
+                                        <div className={styles.part_item}>Фото: <span>0</span></div>
+                                    </div>
+                                    <div className={styles.part}>
+                                        <div className={styles.part_item}>Обычные: <span>{count_images}</span></div>
+                                        
+                                    </div>
+                                </div>
+                            )
+                        }
+                        
                     </div>
                 </Col>
                 <Col span={10}>
                     <div className={styles.action}>
-                        <TextArea placeholder='Описание...' height={65}/>
+                        <TextArea value={about_self} readOnly placeholder='Описание...' height={65}/>
                     </div>
                 </Col>
             </Row>

@@ -6,6 +6,8 @@ import {FC, useEffect, useState} from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import {PulseLoader} from 'react-spinners';
+import Skeleton from './components/Skeleton/Skeleton';
+import Empty from '../../../../components/Empty/Empty';
 
 interface I {
     list: any[],
@@ -14,7 +16,9 @@ interface I {
     setPage?:(...args: any[]) => any,
     setSearchValue: (...args: any[]) => any,
     searchValue: string,
-    currentId?:number | string
+    currentId?:number | string,
+
+    loading?: boolean
 }
 
 
@@ -25,7 +29,8 @@ const Dialogs:FC<I> = ({
     setPage,
     searchValue,
     setSearchValue,
-    currentId
+    currentId,
+    loading
 }) => {
     const {inView, ref} = useInView()
     const nav = useNavigate()
@@ -60,9 +65,18 @@ const Dialogs:FC<I> = ({
             </div>
             <div className={styles.list}>
                 {
-                    list?.map((i,index) => (
-                        <div key={index} className={styles.item}><DialogItem {...i} currentId={currentId} type={type}/></div>
-                    ))
+                    loading ? (
+                        <Skeleton/>
+                    ) : (
+                        list?.length > 0 ? (
+                            list?.map((i,index) => (
+                                <div key={index} className={styles.item}><DialogItem {...i} currentId={currentId} type={type}/></div>
+                            ))
+                        ) : (
+                            <Empty/>
+                        )
+                    )
+                    
                 }
                  {
                     list && list?.length > 0 && (

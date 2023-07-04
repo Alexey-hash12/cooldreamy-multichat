@@ -4,6 +4,7 @@ import styles from './InfoModal.module.scss';
 import {Row, Col} from 'antd';
 import { useAppSelector } from '../../../../hooks/reduxHooks';
 import ApiService from '../../../../service/ApiService';
+import InfoItem from './components/InfoItem/InfoItem';
 
 
 const service = new ApiService()
@@ -27,8 +28,8 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
     const {token} = useAppSelector(s => s.mainReducer)
     const [activeTab, setActiveTab] = useState('1')
     const [page, setPage] = useState(1)
-    const [per_page, setPer_page] = useState(5)
 
+    const [list, setList] = useState<any[]>([])
 
 
     const onClose = () => {
@@ -43,6 +44,11 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
                 per_page: 5
             }).then(res => {
                 console.log(res)
+                if(page === 1) {
+                    setList(res?.data)
+                } else {
+                    setList(s => [...s, res?.data])
+                }
             })
         }
     }
@@ -54,6 +60,11 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
                 per_page: 5
             }).then(res => {
                 console.log(res)
+                if(page === 1) {
+                    setList(res?.data)
+                } else {
+                    setList(s => [...s, res?.data])
+                }
             })
         }   
     }
@@ -65,6 +76,11 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
                 per_page: 5
             }).then(res => {
                 console.log(res)
+                if(page === 1) {
+                    setList(res?.data)
+                } else {
+                    setList(s => [...s, res?.data])
+                }
             })
         }
     }
@@ -108,7 +124,15 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
                     </div>
                 </Col>
                 <Col span={24}>
-                    <div className={styles.list}></div>
+                    <div className={styles.list}>
+                        {
+                            list?.map((i, index) => (
+                                <div key={index} className={styles.item}>
+                                    <InfoItem {...i}/>
+                                </div>
+                            ))
+                        }
+                    </div>
                 </Col>
             </Row>
         </Modal>
