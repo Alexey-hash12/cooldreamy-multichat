@@ -126,9 +126,8 @@ const Rooms:FC<I> = ({
                         <Skeleton/>
                     ) : (
                         list?.length > 0 ? (
-                            
                                 list?.map((i,index) => (
-                                    <div key={index} className={styles.item}><RoomItem {...i} type={type}/></div>
+                                    <RoomItem {...i} type={type}/>
                                 ))
                             
                         ) : <Empty/>

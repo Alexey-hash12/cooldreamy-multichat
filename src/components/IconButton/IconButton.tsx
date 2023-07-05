@@ -13,6 +13,8 @@ const IconButton:FC<IIconButton> = (props) => {
         switch(variant) {
             case 'violet':
                 return styles.violet
+            case 'danger':
+                return styles.danger
             default: 
                 return;
         }

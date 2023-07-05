@@ -5,13 +5,15 @@ import {Row, Col} from 'antd';
 import { useAppSelector } from '../../../../hooks/reduxHooks';
 import ApiService from '../../../../service/ApiService';
 import InfoItem from './components/InfoItem/InfoItem';
-
+import { DatePicker } from 'antd';
+import moment from 'moment';
+import dayjs from 'dayjs';
+import { useInView } from 'react-intersection-observer';
+import { PulseLoader } from 'react-spinners';
 
 const service = new ApiService()
 
-interface I {
 
-}
 
 const tabs = [
     {value: '1', label: 'Логи'},
@@ -21,29 +23,52 @@ const tabs = [
 
 
 
-const InfoModal:FC<I & ModalFuncProps> = (props) => {
+
+
+const InfoModal:FC<ModalFuncProps> = (props) => {
     const {
         onCancel
     } = props
     const {token} = useAppSelector(s => s.mainReducer)
+
+    const {inView, ref} = useInView()
+    const [loadMore, setLoadMore] = useState(false)
+    
     const [activeTab, setActiveTab] = useState('1')
     const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(0)
 
     const [list, setList] = useState<any[]>([])
+    const [date, setDate] = useState<any>(dayjs())
 
 
     const onClose = () => {
         onCancel && onCancel()
     }
 
+    useEffect(() => {
+        if(total !== undefined) {
+            list?.length >= total ? setLoadMore(false) : setLoadMore(true)
+        }
+       
+    }, [list, total])
+
+    useEffect(() => {
+        if(loadMore && inView) {
+            setPage && setPage((s: number) => s + 1)
+        }
+    }, [inView, loadMore, setPage, list])
+
 
     const getReports = () => {
         if(token) {
             service.getReports(token, {
                 page,
-                per_page: 5
+                per_page: 5,
+                date: date ? moment(date).format('Y-m-d') : ''
             }).then(res => {
-                // console.log(res)
+                console.log(res)
+                setTotal(res?.total)
                 if(page === 1) {
                     setList(res?.data)
                 } else {
@@ -53,13 +78,16 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
         }
     }
 
+
     const getLogs = () => {
         if(token) {
             service.getLogs(token, {
                 page,
-                per_page: 5
+                per_page: 5,
+                date: date ? moment(date).format('Y-m-d') : ''
             }).then(res => {
-                // console.log(res)
+                console.log(res)
+                setTotal(res?.total)
                 if(page === 1) {
                     setList(res?.data)
                 } else {
@@ -73,9 +101,12 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
         if(token) {
             service.getFaults(token, {
                 page,
-                per_page: 5
+                per_page: 5,
+                date: date ? moment(date).format('Y-m-d') : ''
+                
             }).then(res => {
-                // console.log(res)
+                console.log(res)
+                setTotal(res?.total)
                 if(page === 1) {
                     setList(res?.data)
                 } else {
@@ -85,10 +116,33 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
         }
     }
 
+    const onDeleteReport = (id: any) => {
+        if(token) {
+            service.deleteReport(token, id).then(res => {
+                console.log(res)
+                if(res?.message === 'success') {
+                    if(activeTab === '2') {
+                        const findIndex = list?.find(i => i.id == id)
+                        if(findIndex !== -1) {
+                            setList(s => {
+                                const m = [...s]
+                                const rm = m.splice(findIndex, 1)
+                                return [...m]
+                            })
+                        }
+                    }
+                } else {
+                    alert("Произошла ошибка")
+                }
+            })
+        }
+    }
     
     useEffect(() => {
         setPage(1)
-    }, [activeTab])
+    }, [activeTab, date])
+
+
 
     useEffect(() => {
         if(activeTab === '1') {
@@ -112,7 +166,18 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
             >
             <Row gutter={[12,12]}>
                 <Col span={24}>
-                    <div className={styles.date}></div>
+                    <div className={styles.date}>
+                        <DatePicker
+                            value={date}
+                            onChange={setDate}
+                            suffixIcon={null}
+                            clearIcon={null}
+                            placement={'bottomRight'}
+                            popupStyle={{left: 'calc(50% - 144px)'}}
+                            popupClassName='date-popup'
+                            showToday={false}
+                            />
+                    </div>
                 </Col>
                 <Col span={24}>
                     <div className={styles.tabs}>
@@ -128,11 +193,20 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
                         {
                             list?.map((i, index) => (
                                 <div key={index} className={styles.item}>
-                                    <InfoItem {...i}/>
+                                    <InfoItem {...i} onDelete={onDeleteReport}/>
                                 </div>
                             ))
                         }
                     </div>
+                    {
+                    list && list?.length > 0 && (
+                        loadMore && (
+                            <div ref={ref} className={styles.load}>
+                                <PulseLoader color='#fff'/>
+                            </div>
+                        )
+                    )
+                }
                 </Col>
             </Row>
         </Modal>

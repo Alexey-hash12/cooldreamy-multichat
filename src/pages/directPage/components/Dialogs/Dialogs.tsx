@@ -70,7 +70,7 @@ const Dialogs:FC<I> = ({
                     ) : (
                         list?.length > 0 ? (
                             list?.map((i,index) => (
-                                <div key={index} className={styles.item}><DialogItem {...i} currentId={currentId} type={type}/></div>
+                                <DialogItem {...i} currentId={currentId} type={type}/>
                             ))
                         ) : (
                             <Empty/>

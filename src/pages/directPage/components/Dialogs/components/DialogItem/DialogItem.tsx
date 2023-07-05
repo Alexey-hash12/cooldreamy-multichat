@@ -10,13 +10,15 @@ import DialogItemChat from './components/DialogItemChat/DialogItemChat';
 import chatMessageTypeVariants from '../../../../../../utils/messageVariants';
 import LinesEllipsis from 'react-lines-ellipsis'
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-const DialogItem = (props: any) => {
+import { useEffect, memo } from 'react';
+
+
+const DialogItemComponent = (props: any) => {
     const {
         name,
         age,
         
-        avatar_url_thumbnail,
+        user_avatar_url,
         online,
         
     } = props?.other_user
@@ -67,7 +69,7 @@ const DialogItem = (props: any) => {
         <div onClick={() => nav(`/direct?type=${type_of_model === 'letter' ? 'mail' : 'chat'}&id=${id}&self_id=${self_user?.id}`)} className={`${styles.wrapper}`}>
             <div className={styles.avatar}>
                 <Avatar
-                    image={avatar_url_thumbnail}
+                    image={user_avatar_url}
                     isNewAction={online === 1}
                     />
             </div>
@@ -115,5 +117,5 @@ const DialogItem = (props: any) => {
     )
 }
 
-
+const DialogItem = memo(DialogItemComponent)
 export default DialogItem;

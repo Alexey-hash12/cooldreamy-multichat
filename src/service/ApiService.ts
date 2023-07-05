@@ -332,13 +332,15 @@ class ApiService {
 
     getReports = async (token: any, {
         page,
-        per_page
+        per_page,
+        date = ''
     }: {
         page: number,
-        per_page: number
+        per_page: number,
+        date?: string
     }) => {
         try {
-            let res = await fetch(endpoints.reports + `?page=${page}&per_page=${per_page}`, {
+            let res = await fetch(endpoints.reports + `?page=${page}&per_page=${per_page}&date=${date}`, {
                 method: "GET",
                 headers: {
                     ...headers,
@@ -370,13 +372,15 @@ class ApiService {
 
     getLogs = async (token: any, {
         page,
-        per_page
+        per_page,
+        date = ''
     }: {
         page: number,
-        per_page: number
+        per_page: number,
+        date?: string
     }) => {
         try {
-            let res = await fetch(endpoints.logs + `?page=${page}&per_page=${per_page}`, {
+            let res = await fetch(endpoints.logs + `?page=${page}&per_page=${per_page}&date=${date}`, {
                 method: "GET",
                 headers: {
                     ...headers,
@@ -393,13 +397,15 @@ class ApiService {
 
     getFaults = async (token: any, {
         page,
-        per_page
+        per_page,
+        date = ''
     }: {
         page: number,
-        per_page: number
+        per_page: number,
+        date?: string
     }) => {
         try {
-            let res = await fetch(endpoints.fault + `?page=${page}&per_page=${per_page}`, {
+            let res = await fetch(endpoints.fault + `?page=${page}&per_page=${per_page}&date=${date}`, {
                 method: "GET",
                 headers: {
                     ...headers,

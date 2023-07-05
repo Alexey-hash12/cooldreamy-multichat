@@ -36,3 +36,9 @@
 .wrapper.round {
     border-radius: 100%;
 }
+
+.wrapper.danger {
+    .main {
+        color: #EB5858;
+    }
+}

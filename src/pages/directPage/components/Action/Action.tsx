@@ -10,6 +10,7 @@ import { Dropdown } from 'antd';
 import ExList from './components/ExList/ExList';
 import Gifts from './components/Gifts/Gifts';
 import Media from '../Media/Media';
+import * as _ from 'lodash';
 const service = new ApiService()
 
 interface I {
@@ -18,14 +19,16 @@ interface I {
     type?: 'chat' | 'mail',
     id?: number | string,
 
-    onUpdateChat?: (...args: any[]) => any
+    onUpdateChat?: (...args: any[]) => any,
+    messages?: any[]
 }
 
 const Action:FC<I> = ({
     setChatBottomPadding,
     type,
     id,
-    onUpdateChat
+    onUpdateChat,
+    messages
 }) => {
     const [load, setLoad] = useState(false)
     const {token} = useAppSelector(s => s.mainReducer)
@@ -72,14 +75,11 @@ const Action:FC<I> = ({
 
 
 
-
-
     const onSendMessage = () => {
         if(token) {
             if(type === 'chat') {
                 if(text && id) {
                     service.sendChatMessage(token, id, {text}).then(res => {
-         
                         if(res?.id) {
                             onUpdateChat && onUpdateChat({messageBody: res?.last_message, dialogBody: res})
                         }
@@ -91,7 +91,6 @@ const Action:FC<I> = ({
             if(type === 'mail') {
                 if(text && id) {
                     service.sendMailMessage(token, id, {text}).then(res => {
-                
                         if(res?.id) {
                             onUpdateChat && onUpdateChat({messageBody: {...res?.last_message, sender_user: res?.self_user}, dialogBody: res})
                         }
@@ -117,9 +116,6 @@ const Action:FC<I> = ({
         }
     }
 
-    const onGiftOpen = () => {
-
-    }
 
     const onSendGift = (gift: any) => {
         if(token && id) {

@@ -57,3 +57,40 @@ body {
         opacity: 1;
     }
 }
+
+.ant-picker {
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    background: #252548;
+    color: #fff;
+    .ant-picker-input {
+        input {
+            color: #fff; 
+            text-align: center;
+
+            &::placeholder {
+                color: rgba(#fff, .5);
+            }
+        }
+        
+    }
+}
+.date-popup {
+    
+}
+.ant-picker-panel-container {
+    background-color: #252548 !important;
+    
+    .ant-picker-header {
+        color: #fff;
+
+        button {
+            color: #fff;
+        }
+    }
+    th {
+        color: #7D6AF0 !important;
+    }
+    .ant-picker-cell {
+        color: #fff;
+    }
+}

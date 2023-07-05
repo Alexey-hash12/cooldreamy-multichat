@@ -27,6 +27,7 @@ const DirectUser = (props: any) => {
     } = props
 
 
+
     return (
         <div className={styles.wrapper}>
             <Row style={{width: '100%'}} gutter={[25,25]}>

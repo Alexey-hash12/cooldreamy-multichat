@@ -6,17 +6,20 @@ import UserTitle from '../../../../../../components/UserTitle/UserTitle';
 import { IUser } from '../../../../../../models/IUser';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, memo} from 'react';
 
 
-const RoomItem:FC<any> = ({
+const RoomItemComponent:FC<any> = ({
     self_user,
     other_user,
     is_new,
     id,
 
     updated_at,
-    type
+    type,
+
+    max_limit,
+    available_limit
 }) => {
     const nav = useNavigate()
     const queryes = useSearchParams()
@@ -67,7 +70,7 @@ const RoomItem:FC<any> = ({
                 <div className={styles.body}>
                     <Row gutter={[3,3]}>
                         <Col span={24}>
-                            <div className={styles.x}>(5 | 5)</div>
+                            <div className={styles.x}>({available_limit} | {max_limit})</div>
                         </Col>
                         {/* <Col span={24}>
                             <div className={styles.y}>(9999)</div>
@@ -89,5 +92,5 @@ const RoomItem:FC<any> = ({
     )
 }
 
-
+const RoomItem = memo(RoomItemComponent)
 export default RoomItem;

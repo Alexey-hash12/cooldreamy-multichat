@@ -74,6 +74,7 @@ const DirectPage = () => {
             if(type === 'chat') {
                 chatsPage === 1 && setLoadRooms(true)
                 service.getChats(token, {page: chatsPage, per_page: 20, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
+                    console.log(res?.data[0])
                     setChatsTotal(res?.total)
                     if(chatsPage === 1) {
                         setRooms(res?.data)
@@ -87,6 +88,7 @@ const DirectPage = () => {
             if(type === 'mail') {
                 chatsPage === 1 && setLoadRooms(true)
                 service.getMails(token, {page: chatsPage, per_page: 5, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
+                    console.log(res?.data[0])
                     setChatsTotal(res?.total)
                     if(chatsPage === 1) {
                         setRooms(res?.data)
@@ -105,6 +107,7 @@ const DirectPage = () => {
         if(token && inboxPage) {
             inboxPage === 1 && setLoadInbox(true)
             service.getInbox(token, {page:inboxPage, per_page: 10, search: inboxSearchValue}).then(res => {
+                
                 setInboxTotal(res?.total)
                 if(inboxPage === 1) {
                     setInbox(res?.data)
@@ -205,18 +208,20 @@ const DirectPage = () => {
                     })
                 }
                 // ?? обновление диалогов
-                // const foundDialog = rooms?.find(s => s?.id == body?.dialogBody?.id) 
-                // if(foundDialog) {
-                //     setRooms(s => {
-                //         const m = s;
-                //         const rm = m.splice(m.findIndex(i => i.id == foundDialog?.id), 1, body?.dialogBody)
-                //         return sortingDialogList([...m])
-                //     })
-                // } else {
-                //     setRooms(s => {
-                //         return sortingDialogList([body?.dialogBody, ...s])
-                //     })
-                // }
+                const foundDialog = rooms?.find(s => s?.id == body?.dialogBody?.id) 
+                
+                console.log(foundDialog)
+                if(foundDialog) {
+                    setRooms(s => {
+                        const m = s;
+                        const rm = m.splice(m.findIndex(i => i.id == foundDialog?.id), 1, body?.dialogBody)
+                        return sortingDialogList([...m])
+                    })
+                } else {
+                    setRooms(s => {
+                        return sortingDialogList([body?.dialogBody, ...s])
+                    })
+                }
             } 
 
             // // TODO Если выбраны ПИСЬМА
@@ -378,6 +383,7 @@ const DirectPage = () => {
                                 onUpdateChat={onUpdateChat}
                                 id={id}
                                 type={type}
+                                messages={messages}
                                 setChatBottomPadding={setChatBottomPadding}
                                 />
                         </div>

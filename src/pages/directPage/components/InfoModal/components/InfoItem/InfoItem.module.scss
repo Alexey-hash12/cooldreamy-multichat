@@ -1,3 +1,52 @@
 .wrapper {
-    
+    padding: 15px;
+    color: #fff;
+    .main {
+        .tm {
+            color: rgba(255, 255, 255, 0.50);
+        }
+
+        .man {
+            .name {
+             
+            }
+            .id {
+                opacity: .3;
+            }
+        }
+
+        .anket {
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+
+            .anket_body {
+                margin-left: 10px;
+                .id {
+                    opacity: .3;
+                }
+            }
+        }
+    }
+
+    .action {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        .descr {    
+            width: 100%;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .btn {
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
 }

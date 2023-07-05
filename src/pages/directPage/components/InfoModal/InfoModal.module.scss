@@ -1,5 +1,11 @@
 .wrapper {
 
+    .date {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .tabs {
         display: flex;
         align-items: center;
@@ -42,5 +48,12 @@
             }
 
         }
+    }
+
+    .load {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
     }
 }

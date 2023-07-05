@@ -10,4 +10,4 @@ export interface IIconButton extends HTMLProps<HTMLButtonElement> {
 }
 
 
-export type iconButtonVariants = 'violet' | 'simple'
+export type iconButtonVariants = 'violet' | 'simple' | 'danger'

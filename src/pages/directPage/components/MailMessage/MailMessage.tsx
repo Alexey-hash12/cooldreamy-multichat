@@ -1,7 +1,7 @@
 import Avatar from '../../../../components/Avatar/Avatar';
 import UserTitle from '../../../../components/UserTitle/UserTitle';
 import styles from './MailMessage.module.scss';
-import {FC, useEffect} from 'react';
+import {FC, useEffect, memo} from 'react';
 import moment from 'moment';
 import FancyboxWrapper from '../../../../components/FancyboxWrapper/FancyboxWrapper';
 import LinesEllipsis from 'react-lines-ellipsis';
@@ -14,7 +14,7 @@ interface I {
 }
 
 
-const MailMessage:FC<any> = (props) => {
+const MailMessageComponent:FC<any> = (props) => {
     const {
         sender_user,
         letter_messageable,
@@ -103,5 +103,5 @@ const MailMessage:FC<any> = (props) => {
     )
 }
 
-
+const MailMessage = memo(MailMessageComponent)
 export default MailMessage;

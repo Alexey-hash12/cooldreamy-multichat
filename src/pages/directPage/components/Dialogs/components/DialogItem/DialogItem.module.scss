@@ -13,8 +13,14 @@
     transition: all .3s ease;
     cursor: pointer;
 
-    .avatar {
+    margin-bottom: 8px;
 
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .avatar {
+        
     }
 
     .body {

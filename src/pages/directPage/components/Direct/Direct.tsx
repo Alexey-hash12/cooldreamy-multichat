@@ -85,8 +85,7 @@ const Direct:FC<I> = ({
                     
                     {
                         list?.map((item,index) => (
-                            <div className={styles.item} key={index}>
-                                <ChatMessage
+                            <ChatMessage
                                     
                                     id={item.id}
                                     avatar={item?.sender_user?.avatar_url_thumbnail}
@@ -105,7 +104,6 @@ const Direct:FC<I> = ({
                                     
                                     senderUser={item?.sender_user}
                                     />
-                            </div>
                         ))
                     }
                     
@@ -140,9 +138,7 @@ const Direct:FC<I> = ({
                 <div className={`${styles.mail} custom-scroll-vertical`} style={{maxHeight: `calc(100% - ${paddingTop}px)`, paddingBottom: chatBottomPadding}}>
                     {
                         list?.map((i, index) => (
-                            <div key={index}  className={styles.item}>
-                                <MailMessage {...i}/>
-                            </div>
+                            <MailMessage {...i}/>
                         ))
                     }
 
