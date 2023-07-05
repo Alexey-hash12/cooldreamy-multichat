@@ -33,7 +33,7 @@ const InfoItem = (props: any) => {
                         <Row align={'middle'} gutter={[3,3]}>
                             <Col span={7}>
                                 <div className={styles.tm}>
-                                    {moment(created_at).format('YYYY-MM-DD HH:MM')}
+                                    {date_time ||  moment(created_at).format('YYYY-MM-DD HH:MM')}
                                 </div>
                             </Col>
                             <Col span={7}>
