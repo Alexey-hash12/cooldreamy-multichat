@@ -239,18 +239,20 @@ const DirectPage = () => {
                     })
                 }
 
-                // const foundDialog = rooms?.find(s => s?.id == body?.dialogBody?.id) 
-                // if(foundDialog) {
-                //     setRooms(s => {
-                //         const m = s;
-                //         const rm = m.splice(m.findIndex(i => i.id == foundDialog?.id), 1, body?.dialogBody)
-                //         return sortingDialogList([...m])
-                //     })
-                // } else {
-                //     setRooms(s => {
-                //         return sortingDialogList([body?.dialogBody, ...s])
-                //     })
-                // }
+                const foundDialog = rooms?.find(s => s?.id == body?.dialogBody?.id) 
+                
+                console.log(foundDialog)
+                if(foundDialog) {
+                    setRooms(s => {
+                        const m = s;
+                        const rm = m.splice(m.findIndex(i => i.id == foundDialog?.id), 1, body?.dialogBody)
+                        return sortingDialogList([...m])
+                    })
+                } else {
+                    setRooms(s => {
+                        return sortingDialogList([body?.dialogBody, ...s])
+                    })
+                }
             }
         } else {
             // !! НЕХВАТАЕТ ВХОДНЫХ ДАННЫХ

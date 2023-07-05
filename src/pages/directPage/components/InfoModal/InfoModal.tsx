@@ -9,6 +9,7 @@ import { DatePicker } from 'antd';
 import moment from 'moment';
 import dayjs from 'dayjs';
 import { useInView } from 'react-intersection-observer';
+import {AiOutlineCloseCircle} from 'react-icons/ai';
 import { PulseLoader } from 'react-spinners';
 
 const service = new ApiService()
@@ -139,7 +140,19 @@ const InfoModal:FC<ModalFuncProps> = (props) => {
     }
     
     useEffect(() => {
-        setPage(1)
+        if(page === 1) {
+            if(activeTab === '1') {
+                getLogs()
+            }   
+            if(activeTab === '2') {
+                getReports()
+            } 
+            if(activeTab === '3') {
+                getFaults()
+            }
+        } else {
+            setPage(1)
+        }
     }, [activeTab, date])
 
 
@@ -171,7 +184,7 @@ const InfoModal:FC<ModalFuncProps> = (props) => {
                             value={date}
                             onChange={setDate}
                             suffixIcon={null}
-                            clearIcon={null}
+                            clearIcon={<AiOutlineCloseCircle/>}
                             placement={'bottomRight'}
                             popupStyle={{left: 'calc(50% - 144px)'}}
                             popupClassName='date-popup'
