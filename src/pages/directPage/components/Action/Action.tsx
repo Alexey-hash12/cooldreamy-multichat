@@ -6,7 +6,7 @@ import IconButton from '../../../../components/IconButton/IconButton';
 import {AiOutlineSmile, AiOutlineGift, AiOutlineCamera} from 'react-icons/ai';
 import { useAppSelector } from '../../../../hooks/reduxHooks';
 import ApiService from '../../../../service/ApiService';
-import { Dropdown } from 'antd';
+import { Dropdown, message } from 'antd';
 import ExList from './components/ExList/ExList';
 import Gifts from './components/Gifts/Gifts';
 import Media from '../Media/Media';
@@ -80,8 +80,12 @@ const Action:FC<I> = ({
             if(type === 'chat') {
                 if(text && id) {
                     service.sendChatMessage(token, id, {text}).then(res => {
+                        
                         if(res?.id) {
                             onUpdateChat && onUpdateChat({messageBody: res?.last_message, dialogBody: res})
+                        }
+                        if(res?.error === 'NO_LIMIT') {
+                            message.error('У вас недостаточно лимита')
                         }
                     }).finally(() => {
                         setText('')
@@ -93,6 +97,9 @@ const Action:FC<I> = ({
                     service.sendMailMessage(token, id, {text}).then(res => {
                         if(res?.id) {
                             onUpdateChat && onUpdateChat({messageBody: {...res?.last_message, sender_user: res?.self_user}, dialogBody: res})
+                        }
+                        if(res?.error === 'NO_LIMIT') {
+                            message.error('У вас недостаточно лимита')
                         }
                     }).finally(() => {
                         setText('')
@@ -111,6 +118,9 @@ const Action:FC<I> = ({
                     if(res?.id) {
                         onUpdateChat && onUpdateChat({messageBody: res?.last_message, dialogBody: res})
                     }
+                    if(res?.error === 'NO_LIMIT') {
+                        message.error('У вас недостаточно лимита')
+                    }
                 })
             }
         }
@@ -124,6 +134,9 @@ const Action:FC<I> = ({
                
                     if(res?.id) {
                         onUpdateChat && onUpdateChat({messageBody: res?.last_message, dialogBody: res})
+                    }
+                    if(res?.error === 'NO_LIMIT') {
+                        message.error('У вас недостаточно лимита')
                     }
                 })
             }
@@ -145,6 +158,9 @@ const Action:FC<I> = ({
                         onUpdateChat && onUpdateChat({messageBody: res?.last_message, dialogBody: res})
                         setMediaModal(false)
                     }
+                    if(res?.error === 'NO_LIMIT') {
+                        message.error('У вас недостаточно лимита')
+                    }
                 })
             }
             if(type === 'mail') {
@@ -153,6 +169,9 @@ const Action:FC<I> = ({
                     if(res?.id) {
                         onUpdateChat && onUpdateChat({messageBody: {...res?.last_message, sender_user: res?.self_user}, dialogBody: res})
                         setMediaModal(false)
+                    }
+                    if(res?.error === 'NO_LIMIT') {
+                        message.error('У вас недостаточно лимита')
                     }
                 }).finally(() => {
                     setText('')

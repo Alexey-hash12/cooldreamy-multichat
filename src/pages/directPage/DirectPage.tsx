@@ -196,19 +196,26 @@ const DirectPage = () => {
             if(type === 'chat') {
                 // ?? обновление чата
                 const foundMessage = messages?.find(s =>  s?.id == body?.messageBody?.id)
-                if(foundMessage) {
-                    setMessages(s => {
-                        const m = s;
-                        const rm = m.splice(m.findIndex(i => i.id == foundMessage?.id), 1, body?.messageBody)
-                        return sortingChatList([...m])
-                    })   
-                } else {
-                    setMessages(s => {
-                        return sortingChatList([body?.messageBody, ...s])
-                    })
+                if(id == body?.dialogBody?.id) {
+                    if(foundMessage) {
+                        
+                        setMessages(s => {
+                            const m = s;
+                            const rm = m.splice(m.findIndex(i => i.id == foundMessage?.id), 1, body?.messageBody)
+                            return sortingChatList([...m])
+                        })   
+                    } else {
+                        setMessages(s => {
+                            return sortingChatList([body?.messageBody, ...s])
+                        })
+                    }        
                 }
+                
                 // ?? обновление диалогов
                 const foundDialog = rooms?.find(s => s?.id == body?.dialogBody?.id) 
+
+                console.log(foundDialog)
+                console.log(body?.dialogBody)
                 
                 console.log(foundDialog)
                 if(foundDialog) {
@@ -227,17 +234,20 @@ const DirectPage = () => {
             // // TODO Если выбраны ПИСЬМА
             if(type === 'mail') {
                 const foundLetter = messages?.find(s => s?.id == body?.messageBody?.id)
-                if(foundLetter) {
-                    setMessages(s => {
-                        const m = s;
-                        const rm = m.splice(m.findIndex(i => i.id == foundLetter?.id), 1, body?.messageBody)
-                        return sortingMailChatList([...m])
-                    })
-                } else {
-                    setMessages(s => {
-                        return sortingMailChatList([body?.messageBody, ...s])
-                    })
+                if(body?.dialogBody?.id == id) {
+                    if(foundLetter) {
+                        setMessages(s => {
+                            const m = s;
+                            const rm = m.splice(m.findIndex(i => i.id == foundLetter?.id), 1, body?.messageBody)
+                            return sortingMailChatList([...m])
+                        })
+                    } else {
+                        setMessages(s => {
+                            return sortingMailChatList([body?.messageBody, ...s])
+                        })
+                    }
                 }
+                
 
                 const foundDialog = rooms?.find(s => s?.id == body?.dialogBody?.id) 
                 
