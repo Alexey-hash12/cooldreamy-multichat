@@ -17,8 +17,10 @@ const InfoItem = (props: any) => {
         text,
         log,
         reason,
-
-        onDelete
+        man,
+        anket,
+        onDelete,
+        created_at
     } = props
 
 
@@ -31,23 +33,24 @@ const InfoItem = (props: any) => {
                         <Row align={'middle'} gutter={[3,3]}>
                             <Col span={7}>
                                 <div className={styles.tm}>
-                                    {date_time}
+                                    {moment(created_at).format('YYYY-MM-DD HH:MM')}
                                 </div>
                             </Col>
                             <Col span={7}>
                                 <div className={styles.man}>
-                                    <div className={styles.name}>{'Username'}</div>
-                                    <div className={styles.id}>{man_id}</div>
+                                    <div className={styles.name}>{anket?.name}</div>
+                                    <div className={styles.id}>{anket_id}</div>
                                 </div>
                             </Col>
                             <Col span={10}>
                                 <div className={styles.anket}>
                                     <Avatar
+                                        image={man?.user_avatar_url}
                                         size={40}
                                         />
                                     <div className={styles.anket_body}>
-                                        <div className={styles.name}>{'Username'}</div>
-                                        <div className={styles.id}>{anket_id}</div>
+                                        <div className={styles.name}>{man?.name}</div>
+                                        <div className={styles.id}>{man_id}</div>
                                     </div>
                                     <div className={styles.anket_action}>
 
