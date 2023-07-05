@@ -52,7 +52,6 @@ const Action:FC<I> = ({
     const getStickers = () => {
         if(token) {
             service.getStickers(token).then(res => {
-                console.log(res)
                 setStickers(res)
             })
         }
@@ -61,7 +60,6 @@ const Action:FC<I> = ({
     const getGifts = () => {
         if(token) {
             service.getGifts(token).then(res => {
-                console.log(res)
                 setGifts(res)
             })
         }
@@ -81,7 +79,7 @@ const Action:FC<I> = ({
             if(type === 'chat') {
                 if(text && id) {
                     service.sendChatMessage(token, id, {text}).then(res => {
-                        console.log(res)
+         
                         if(res?.id) {
                             onUpdateChat && onUpdateChat({messageBody: res?.last_message, dialogBody: res})
                         }
@@ -93,7 +91,7 @@ const Action:FC<I> = ({
             if(type === 'mail') {
                 if(text && id) {
                     service.sendMailMessage(token, id, {text}).then(res => {
-                        console.log(res)
+                
                         if(res?.id) {
                             onUpdateChat && onUpdateChat({messageBody: {...res?.last_message, sender_user: res?.self_user}, dialogBody: res})
                         }
@@ -110,7 +108,7 @@ const Action:FC<I> = ({
         if(token && id) {
             if(type === 'chat') {
                 service.sendChatSticker(token, id, {sticker_id: sticker?.id}).then(res => {
-                    console.log(res)
+          
                     if(res?.id) {
                         onUpdateChat && onUpdateChat({messageBody: res?.last_message, dialogBody: res})
                     }
@@ -127,7 +125,7 @@ const Action:FC<I> = ({
         if(token && id) {
             if(type === 'chat') {
                 service.sendChatGift(token, id, {gift_id: gift?.id}).then(res => {
-                    console.log(res)
+               
                     if(res?.id) {
                         onUpdateChat && onUpdateChat({messageBody: res?.last_message, dialogBody: res})
                     }
@@ -139,14 +137,14 @@ const Action:FC<I> = ({
 
 
     const onSendMedia = (images: any[]) => {
-        console.log(images)
+     
         if(id && token) {
             if(type === 'chat') {
                 service.sendChatMedia(token, id, {
                     thumbnail_url: images[0]?.thumbnail_url,
                     image_url: images[0]?.thumbnail_url
                 }).then(res => {
-                    console.log(res)
+                
                     if(res?.id) {
                         onUpdateChat && onUpdateChat({messageBody: res?.last_message, dialogBody: res})
                         setMediaModal(false)
@@ -155,7 +153,7 @@ const Action:FC<I> = ({
             }
             if(type === 'mail') {
                 service.sendMailMessage(token, id, {text, images: images?.map(i => i.id)}).then(res => {
-                    console.log(res)
+                   
                     if(res?.id) {
                         onUpdateChat && onUpdateChat({messageBody: {...res?.last_message, sender_user: res?.self_user}, dialogBody: res})
                         setMediaModal(false)

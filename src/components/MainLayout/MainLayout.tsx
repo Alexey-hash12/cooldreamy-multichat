@@ -48,11 +48,7 @@ const MainLayout = ({children}: {children: ReactNode}) => {
 					}
 				}
 			)
-            // service.getMyProfile(token).then(res => {
-            //     console.log(res)
-            // })
 		}
-		console.log(token)
 	}, [token])
 
 	useEffect(() => {

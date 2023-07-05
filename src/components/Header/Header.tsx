@@ -31,7 +31,6 @@ const Header = () => {
     const getData = () => {
         if(token) {
             service.getWork(token).then(res => {
-                console.log(res)
                 if(Object.keys(res)?.length === 0) {
                     setWorkTime('00:00')
                     setDisableStart(false)

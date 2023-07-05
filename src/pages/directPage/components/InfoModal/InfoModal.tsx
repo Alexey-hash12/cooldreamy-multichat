@@ -43,7 +43,7 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
                 page,
                 per_page: 5
             }).then(res => {
-                console.log(res)
+                // console.log(res)
                 if(page === 1) {
                     setList(res?.data)
                 } else {
@@ -59,7 +59,7 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
                 page,
                 per_page: 5
             }).then(res => {
-                console.log(res)
+                // console.log(res)
                 if(page === 1) {
                     setList(res?.data)
                 } else {
@@ -75,7 +75,7 @@ const InfoModal:FC<I & ModalFuncProps> = (props) => {
                 page,
                 per_page: 5
             }).then(res => {
-                console.log(res)
+                // console.log(res)
                 if(page === 1) {
                     setList(res?.data)
                 } else {

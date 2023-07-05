@@ -19,7 +19,7 @@ const service = new ApiService()
 const DirectPage = () => {
     const {token, socketChanel, newChatMessage, newMailMessage, deleteInbox, newInbox} = useAppSelector(s => s.mainReducer)
     const queryes = useSearchParams()
-    const [type, setType] = useState<any>('chat') // chat, mail
+    const [type, setType] = useState<any>() // chat, mail
     const [id, setId] = useState<any>()
     const [selfUserId, setSelfUserId] = useState<any>()
 
@@ -66,8 +66,6 @@ const DirectPage = () => {
     }, [queryes])
 
 
-
-    useEffect(() => console.log(chatSearchDebounced), [chatSearchDebounced])
     
 
 
@@ -108,7 +106,6 @@ const DirectPage = () => {
             inboxPage === 1 && setLoadInbox(true)
             service.getInbox(token, {page:inboxPage, per_page: 10, search: inboxSearchValue}).then(res => {
                 setInboxTotal(res?.total)
-                console.log(res?.data)
                 if(inboxPage === 1) {
                     setInbox(res?.data)
                 } else {
@@ -147,7 +144,6 @@ const DirectPage = () => {
                 }).then(res => {
                     setother_user(res.other_user)
                     setself_user(res.self_user)
-                    console.log(res)
                     setDialogTotal(res?.letter_messages?.total)
                     if(dialogPage === 1) {
                         setMessages(res?.letter_messages?.data)
@@ -191,7 +187,6 @@ const DirectPage = () => {
         dialogBody?:any
     }) => {
         // ?? В САМОМ ЧАТЕ
-        console.log(body)
         if(body?.dialogBody && body?.messageBody) {
 
             // TODO Если выбран ЧАТ
@@ -257,18 +252,14 @@ const DirectPage = () => {
         }
     }
 
-    useEffect(() => {
-        console.log(messages)
-    }, [messages])
+ 
 
     useEffect(() => {
         if(inbox?.length > 0) {
             if(deleteInbox) {
-                console.log(deleteInbox)
                 
                 const foundIndex = inbox.findIndex(i => i.id == deleteInbox?.id && i.model_type == deleteInbox?.type)
 
-                console.log(foundIndex)
                 
                 if(foundIndex !== -1) {
                     setInbox(s => {
@@ -298,12 +289,16 @@ const DirectPage = () => {
     
     useEffect(() => {
         getRooms()
-    }, [token, chatsPage, chatsFilter, chatSearchDebounced, type])
+    }, [token, chatsPage])
 
-    
     useEffect(() => {
-        setChatsPage(1)
-    }, [chatsFilter, chatSearchDebounced, type])
+        if(chatsPage === 1) {
+            getRooms()
+        } else {
+            setChatsPage(1)
+        }
+    }, [type, chatSearchDebounced, chatsFilter])
+    
 
 
     //socket action
