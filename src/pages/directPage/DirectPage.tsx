@@ -287,8 +287,9 @@ const DirectPage = () => {
                 }
             }
             if(newInbox) {
-                const foundItem = inbox.find(i => i.id == deleteInbox?.id && i.model_type == deleteInbox?.type)
-                const foundIndex = inbox.findIndex(i => i.id == deleteInbox?.id && i.model_type == deleteInbox?.type)
+                console.log(newInbox)
+                const foundItem = inbox.find(i => i.id == newInbox?.id && i.model_type == newInbox?.type)
+                const foundIndex = inbox.findIndex(i => i.id == newInbox?.id && i.model_type == newInbox?.type)
                 if(foundItem && foundIndex !== -1) {
                     setInbox(s => {
                         const m = [...s];

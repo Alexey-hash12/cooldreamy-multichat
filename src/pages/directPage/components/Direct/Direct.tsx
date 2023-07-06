@@ -88,7 +88,7 @@ const Direct:FC<I> = ({
                             <ChatMessage
                                     
                                     id={item.id}
-                                    avatar={item?.sender_user?.avatar_url_thumbnail}
+                                    avatar={item?.sender_user?.user_avatar_url}
                                     status={item?.is_read_by_recepient === 1 ? 'read' : 'unread'}
                                     text={item.chat_messageable?.text}
                                     images={[{image: item.chat_messageable?.image_url, thumbnail: item?.chat_messageable?.thumbnail_url}]}

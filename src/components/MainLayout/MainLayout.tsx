@@ -69,17 +69,20 @@ const MainLayout = ({children}: {children: ReactNode}) => {
 		if(socketChanel) {
 			socketChanel?.listen(socketEvents.eventNewChatMessage, (data: any) => {
 				dispatch(main_updateNewChatMessage(data))
+				dispatch(main_updateInbox(data))
+				console.log(data)
 			})
 			socketChanel?.listen(socketEvents.eventNewMailMessage, (data: any) => {
 				dispatch(main_updateNewMailMessage(data))
+				dispatch(main_updateInbox(data))
 			})
 			socketChanel?.listen(socketEvents.eventDeleteInbox, (data: any) => {
 				dispatch(main_deleteInbox(data))
 			})
-			socketChanel?.listen(socketEvents.eventNewInbox, (data: any) => {
-				console.log(data)
-				dispatch(main_updateInbox(data))
-			})
+			// socketChanel?.listen(socketEvents.eventNewInbox, (data: any) => {
+			// 	console.log(data)
+			// 	dispatch(main_updateInbox(data))
+			// })
 		}
 	}, [socketChanel])
 

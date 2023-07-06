@@ -76,7 +76,7 @@ const MailMessageComponent:FC<any> = (props) => {
         <div className={styles.wrapper}>
             <div className={styles.avatar}>
                 <Avatar
-                    image={sender_user?.avatar_url_thumbnail}
+                    image={sender_user?.user_avatar_url}
                     size={35}
                     isRound
                     />
