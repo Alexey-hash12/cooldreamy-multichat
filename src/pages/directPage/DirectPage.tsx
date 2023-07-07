@@ -120,6 +120,13 @@ const DirectPage = () => {
         }
     }
 
+    // useEffect(() => {
+    //     console.log(inbox[0])
+    // }, [inbox])
+
+    useEffect(() => {
+        console.log(inbox)
+    }, [inbox])
 
     const getDialog = () => {
         if(token && id && dialogPage) {
@@ -214,8 +221,7 @@ const DirectPage = () => {
                 // ?? обновление диалогов
                 const foundDialog = rooms?.find(s => s?.id == body?.dialogBody?.id) 
 
-                console.log(foundDialog)
-                console.log(body?.dialogBody)
+                
                 
                 console.log(foundDialog)
                 if(foundDialog) {
@@ -275,7 +281,7 @@ const DirectPage = () => {
         if(inbox?.length > 0) {
             if(deleteInbox) {
                 
-                const foundIndex = inbox.findIndex(i => i.id == deleteInbox?.id && i.model_type == deleteInbox?.type)
+                const foundIndex = inbox.findIndex(i => i.id == deleteInbox?.id && i.type_of_model == deleteInbox?.type)
 
                 
                 if(foundIndex !== -1) {
@@ -287,9 +293,10 @@ const DirectPage = () => {
                 }
             }
             if(newInbox) {
-                console.log(newInbox)
-                const foundItem = inbox.find(i => i.id == newInbox?.id && i.model_type == newInbox?.type)
-                const foundIndex = inbox.findIndex(i => i.id == newInbox?.id && i.model_type == newInbox?.type)
+                const foundItem = inbox.find(i => i.id == newInbox?.chat_list_item?.id && i.type_of_model == newInbox?.chat_list_item?.type_of_model)
+                
+                const foundIndex = inbox.findIndex(i => i.id == newInbox?.chat_list_item?.id && i.type_of_model == newInbox?.chat_list_item?.type_of_model)
+             
                 if(foundItem && foundIndex !== -1) {
                     setInbox(s => {
                         const m = [...s];
@@ -297,11 +304,11 @@ const DirectPage = () => {
                         return [...m]
                     })
                 } else {
-                    setInbox(s => [newInbox, ...s])
+                    setInbox(s => [{...newInbox?.chat_list_item, other_user: newInbox?.chat_list_item?.chat_message?.sender_user, self_user: newInbox?.chat_list_item?.chat_message?.recepient_user}, ...s])
                 }
             }
         }   
-    }, [inbox, deleteInbox, newInbox])
+    }, [deleteInbox, newInbox])
 
 
     
@@ -325,6 +332,7 @@ const DirectPage = () => {
 
             if(type === 'chat') {
                 if(newChatMessage) {
+                    console.log(newChatMessage)
                     // onUpdateChat && onUpdateChat({
                     //     messageBody: newChatMessage?.chat_list_item?.chat?.last_message, 
                     //     dialogBody: newChatMessage?.chat_list_item?.chat
@@ -333,6 +341,7 @@ const DirectPage = () => {
                         messageBody: newChatMessage?.chat_message, 
                         dialogBody: {...newChatMessage?.chat_list_item, other_user: newChatMessage?.chat_message?.sender_user, self_user: newChatMessage?.chat_message?.recepient_user}
                     })
+                    console.log(newChatMessage)
                 }
             }
             if(type === 'mail') {

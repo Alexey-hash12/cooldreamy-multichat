@@ -20,8 +20,8 @@ const DialogItemComponent = (props: any) => {
         
         user_avatar_url,
         online,
-        
-    } = props?.other_user
+    } = props?.other_user || {}
+    
     const {
         self_user,
         last_message,

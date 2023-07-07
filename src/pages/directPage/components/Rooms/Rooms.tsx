@@ -127,7 +127,7 @@ const Rooms:FC<I> = ({
                     ) : (
                         list?.length > 0 ? (
                                 list?.map((i,index) => (
-                                    <RoomItem {...i} type={type}/>
+                                    <RoomItem key={index} {...i} type={type}/>
                                 ))
                             
                         ) : <Empty/>
