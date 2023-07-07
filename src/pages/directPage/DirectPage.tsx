@@ -288,24 +288,41 @@ const DirectPage = () => {
                 }
             }
             if(newInbox) {
-                const foundItem = inbox.find(i => i.id == newInbox?.chat_list_item?.id && i.type_of_model == newInbox?.chat_list_item?.type_of_model)
-                console.log(newInbox)
-                const foundIndex = inbox.findIndex(i => i.id == newInbox?.chat_list_item?.id && i.type_of_model == newInbox?.chat_list_item?.type_of_model)
-                console.log(foundItem)
-                console.log(foundIndex)
-                if(foundItem && foundIndex !== -1) {
-                    setInbox(s => {
-                        const m = [...s];
-                        const rm = m.splice(foundIndex, 1, {...newInbox?.chat_list_item, last_message: newInbox?.chat_message,other_user: newInbox?.chat_message?.sender_user, self_user: newInbox?.chat_message?.recepient_user})
-                        return [...m]
-                    })
-                } else {
-                    //setInbox(s => [{...newInbox?.chat_list_item, other_user: newInbox?.chat_list_item?.sender_user, self_user: newInbox?.chat_message?.recepient_user}, ...s])
-                    setInbox(s => [{...newInbox?.chat_list_item, last_message: newInbox?.chat_message,other_user: newInbox?.chat_message?.sender_user, self_user: newInbox?.chat_message?.recepient_user}, ...s])
+                if(type === 'chat') {
+                    const foundItem = inbox.find(i => i.id == newInbox?.chat_list_item?.id && i.type_of_model == newInbox?.chat_list_item?.type_of_model)
+                
+                    const foundIndex = inbox.findIndex(i => i.id == newInbox?.chat_list_item?.id && i.type_of_model == newInbox?.chat_list_item?.type_of_model)
+
+                    
+
+                    if(foundItem && foundIndex !== -1) {
+                        if(foundItem?.type_of_model === 'chat') {
+                            setInbox(s => {
+                                const m = [...s];
+                                const rm = m.splice(foundIndex, 1, {...newInbox?.chat_list_item, last_message: newInbox?.chat_message,other_user: newInbox?.chat_message?.sender_user, self_user: newInbox?.chat_message?.recepient_user})
+                                return [...m]
+                            })
+                        }
+                        if(foundItem?.type_of_model === 'letter') {
+                            setInbox(s => {
+                                const m = [...s];
+                                const rm = m.splice(foundIndex, 1, {...newInbox?.letter_list_item, last_message: newInbox?.letter_message,other_user: newInbox?.letter_message?.sender_user, self_user: newInbox?.letter_message?.recepient_user})
+                                return [...m]
+                            })
+                        }
+                    } else {
+                        if(newInbox?.chat_list_item) {
+                            setInbox(s => [{...newInbox?.chat_list_item, last_message: newInbox?.chat_message,other_user: newInbox?.chat_message?.sender_user, self_user: newInbox?.chat_message?.recepient_user}, ...s])
+                        }
+                        if(newInbox?.letter_list_item) {
+                            setInbox(s => [{...newInbox?.letter_list_item, last_message: newInbox?.letter_message,other_user: newInbox?.letter_message?.sender_user, self_user: newInbox?.letter_message?.recepient_user}, ...s])
+                        }
+                    }
                 }
+                
             }
         }   
-    }, [deleteInbox, newInbox])
+    }, [deleteInbox, newInbox, type])
 
 
     
