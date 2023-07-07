@@ -76,6 +76,7 @@ const DirectPage = () => {
                 service.getChats(token, {page: chatsPage, per_page: 20, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
                     console.log(res?.data[0])
                     setChatsTotal(res?.total)
+                    
                     if(chatsPage === 1) {
                         setRooms(res?.data)
                     } else {
@@ -120,13 +121,8 @@ const DirectPage = () => {
         }
     }
 
-    // useEffect(() => {
-    //     console.log(inbox[0])
-    // }, [inbox])
 
-    useEffect(() => {
-        console.log(inbox)
-    }, [inbox])
+
 
     const getDialog = () => {
         if(token && id && dialogPage) {
@@ -223,16 +219,15 @@ const DirectPage = () => {
 
                 
                 
-                console.log(foundDialog)
                 if(foundDialog) {
                     setRooms(s => {
                         const m = s;
-                        const rm = m.splice(m.findIndex(i => i.id == foundDialog?.id), 1, body?.dialogBody)
+                        const rm = m.splice(m.findIndex(i => i.id == foundDialog?.id), 1, {...body?.dialogBody, max_limit: body?.messageBody?.max_limit, available_limit: body?.messageBody?.available_limit})
                         return sortingDialogList([...m])
                     })
                 } else {
                     setRooms(s => {
-                        return sortingDialogList([body?.dialogBody, ...s])
+                        return sortingDialogList([{...body?.dialogBody, max_limit: body?.messageBody?.max_limit, available_limit: body?.messageBody?.available_limit}, ...s])
                     })
                 }
             } 
@@ -261,12 +256,12 @@ const DirectPage = () => {
                 if(foundDialog) {
                     setRooms(s => {
                         const m = s;
-                        const rm = m.splice(m.findIndex(i => i.id == foundDialog?.id), 1, body?.dialogBody)
+                        const rm = m.splice(m.findIndex(i => i.id == foundDialog?.id), 1, {...body?.dialogBody, max_limit: body?.messageBody?.max_limit, available_limit: body?.messageBody?.available_limit})
                         return sortingDialogList([...m])
                     })
                 } else {
                     setRooms(s => {
-                        return sortingDialogList([body?.dialogBody, ...s])
+                        return sortingDialogList([{...body?.dialogBody, max_limit: body?.messageBody?.max_limit, available_limit: body?.messageBody?.available_limit}, ...s])
                     })
                 }
             }
@@ -294,17 +289,19 @@ const DirectPage = () => {
             }
             if(newInbox) {
                 const foundItem = inbox.find(i => i.id == newInbox?.chat_list_item?.id && i.type_of_model == newInbox?.chat_list_item?.type_of_model)
-                
+                console.log(newInbox)
                 const foundIndex = inbox.findIndex(i => i.id == newInbox?.chat_list_item?.id && i.type_of_model == newInbox?.chat_list_item?.type_of_model)
-             
+                console.log(foundItem)
+                console.log(foundIndex)
                 if(foundItem && foundIndex !== -1) {
                     setInbox(s => {
                         const m = [...s];
-                        const rm = m.splice(foundIndex, 1, foundItem)
+                        const rm = m.splice(foundIndex, 1, {...newInbox?.chat_list_item, last_message: newInbox?.chat_message,other_user: newInbox?.chat_message?.sender_user, self_user: newInbox?.chat_message?.recepient_user})
                         return [...m]
                     })
                 } else {
-                    setInbox(s => [{...newInbox?.chat_list_item, other_user: newInbox?.chat_list_item?.chat_message?.sender_user, self_user: newInbox?.chat_list_item?.chat_message?.recepient_user}, ...s])
+                    //setInbox(s => [{...newInbox?.chat_list_item, other_user: newInbox?.chat_list_item?.sender_user, self_user: newInbox?.chat_message?.recepient_user}, ...s])
+                    setInbox(s => [{...newInbox?.chat_list_item, last_message: newInbox?.chat_message,other_user: newInbox?.chat_message?.sender_user, self_user: newInbox?.chat_message?.recepient_user}, ...s])
                 }
             }
         }   
