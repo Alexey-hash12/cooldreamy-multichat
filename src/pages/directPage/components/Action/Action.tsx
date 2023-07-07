@@ -80,7 +80,7 @@ const Action:FC<I> = ({
             if(type === 'chat') {
                 if(text && id) {
                     service.sendChatMessage(token, id, {text}).then(res => {
-                        
+                        console.log(res)
                         if(res?.id) {
                             onUpdateChat && onUpdateChat({messageBody: res?.last_message, dialogBody: res})
                         }
