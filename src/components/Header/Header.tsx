@@ -31,12 +31,14 @@ const Header = () => {
     const getData = () => {
         if(token) {
             service.getWork(token).then(res => {
-                if(Object.keys(res)?.length === 0) {
+                console.log(res)
+                if(res?.data === null || Object.keys(res?.data)?.length === 0) {
+                    console.log('start')
                     setWorkTime('00:00')
                     setDisableStart(false)
                     setDisableStop(true)
                 } else {
-                    const dateFrom = moment(res?.date_from).valueOf()
+                    const dateFrom = moment(res?.data?.date_from).valueOf()
                     const t = Date.now() - dateFrom
                     setWorkTime(moment(t).format('HH:MM'))
                     setDisableStart(true)
@@ -67,6 +69,9 @@ const Header = () => {
             service.workStop(token).then(res => {
                 console.log(res)
                 getData()
+                if(res?.data === null) {
+                    
+                }
             })
         }
     }
