@@ -58,7 +58,7 @@ const Header = () => {
     const onStart = () => {
         if(token) {
             service.workStart(token).then(res => {
-                console.log(res)
+                
                 getData()
             })
         }
