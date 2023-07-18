@@ -415,13 +415,17 @@ const DirectPage = () => {
                                     otherUser={other_user}
                                     chatBottomPadding={chatBottomPadding}
                                     />
-                            <Action
-                                onUpdateChat={onUpdateChat}
-                                id={id}
-                                type={type}
-                                messages={messages}
-                                setChatBottomPadding={setChatBottomPadding}
-                                />
+                            {
+                                id && (
+                                    <Action
+                                    onUpdateChat={onUpdateChat}
+                                    id={id}
+                                    type={type}
+                                    messages={messages}
+                                    setChatBottomPadding={setChatBottomPadding}
+                                    />
+                                )
+                            }
                         </div>
                     </Col>
                     <Col span={7}>
