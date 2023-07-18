@@ -9,13 +9,13 @@ import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '../../../../hooks/reduxHooks';
 import ApiService from '../../../../service/ApiService';
 import {Row, Col} from 'antd';
-
+import { useInView } from 'react-intersection-observer';
+import Skeleton from './components/Skeleton/Skeleton';
+import { PulseLoader } from 'react-spinners';
 
 const tabs = [
-    {value: '1', label: 'Фото', icon: <BsImages/>},
-    {value: '2', label: 'Видео', icon: <FiPlayCircle/>},
-    {value: '3', label: 'Аудио', icon: <RiVoiceprintLine/>},
-    {value: '4', label: 'Отправленные', icon: <BsCheckLg/>},
+    {value: '1', label: 'Профиль', icon: <BsImages/>},
+    {value: '2', label: '18+', icon: <BsImages/>},
 ]
 
 interface I {
@@ -38,15 +38,38 @@ const Media:FC<I> = ({
 }) => {
     const {token} = useAppSelector(s => s.mainReducer)
     const queryes = useSearchParams()
+    const {inView, ref} = useInView()
+
 
     const [selfId, setSeldId] = useState<any>()
 
     const [activeTab, setActiveTab] = useState('1')
     const [selected, setSelected] = useState<any[]>([])
     const [mediaList, setMediaList] = useState<any[]>([])
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState<number>(1)
 
-    
+    const [loading, setLoading] = useState(false)
+    const [loadMore, setLoadMore] = useState(false)
+    const [total, setTotal] = useState(0)
+
+    useEffect(() => {
+        if(isOpen) {
+            if(total !== undefined) {
+                mediaList?.length >= total ? setLoadMore(false) : setLoadMore(true)
+            }
+        }
+        
+       
+    }, [mediaList, total, isOpen])
+
+    useEffect(() => {
+        if(isOpen) {
+            if(loadMore && inView) {
+                setPage && setPage((s: number) => s + 1)
+            }
+        }
+    }, [inView, loadMore, setPage, mediaList, isOpen])
+
 
     useEffect(() => {
         if(queryes) {
@@ -58,11 +81,24 @@ const Media:FC<I> = ({
         setSelected([])
     }, [type, selfId])
 
+    const closeHandle = () => {
+        setLoadMore(false)
+        setLoading(false)
+        setTotal(0)
+        setMediaList([])
+        onClose && onClose()
+    }
 
+    useEffect(() => {
+        if(isOpen) {
+            getMedia()
+        }
+    }, [page, token, selfId, isOpen])
+
+    
 
     const onSelectMedia = (item: any) => {
         if(type === 'chat') {
-            
             const findIndex = selected?.findIndex(i => i?.id == item?.id) 
             if(findIndex !== -1) {
                 setSelected([])
@@ -73,8 +109,6 @@ const Media:FC<I> = ({
         if(type === 'mail') {
             const findIndex = selected?.findIndex(i => i?.id == item?.id)
             const findItem = selected?.find(i => i?.id == item?.id)
-    
-            
     
             if(findIndex !== -1) {
                 setSelected(s => {
@@ -93,23 +127,29 @@ const Media:FC<I> = ({
 
     const getMedia = () => {
         if(token && selfId) {
-            service.getMedia(token, selfId).then(res => {
-                setMediaList(res?.profile_photo?.data)
-                // console.log(res?.profile_photo)
+            page === 1 && setLoading(true)
+            service.getMedia(token, selfId, page).then(res => {
+                
+                setTotal(res?.profile_photo?.total)
+                if(page === 1) {
+                    setMediaList(res?.profile_photo?.data)
+                } else {
+                    setMediaList(s => [...s, ...res?.profile_photo?.data])
+                }
+            }).finally(() => {
+                setLoading(false)
             })
         }
     }
 
+    // useEffect(() => {
+    //     closeHandle()
+    // }, [selfId])
+
+
     useEffect(() => {
-        if(isOpen) {
-            getMedia()
-        } else {
-            setMediaList([])
-            setSelected([])
-            setActiveTab('1')
-            setPage(1)
-        }
-    }, [selfId, token, isOpen])
+        setPage(1)
+    }, [selfId])
     
 
 
@@ -125,9 +165,9 @@ const Media:FC<I> = ({
             </div>
             <div className={styles.info}>
                 <div className={styles.user}>
-                    <Avatar
+                    {/* <Avatar
                         
-                        />
+                        /> */}
                 </div>
                 <div className={styles.action}>
                     {/* <div className={styles.action_btn}>
@@ -155,20 +195,38 @@ const Media:FC<I> = ({
                 }
             </div>
             <div className={styles.body}>
-                <Row gutter={[12,12]}>
-                    {
-                        activeTab === '1' && (
-                            mediaList?.length > 0 && mediaList?.map((i, index) => (
-                                <Col span={6}>
-                                    <div onClick={() => onSelectMedia(i)} className={`${styles.item} ${selected?.find(f => f?.id == i?.id) ? styles.active : ''}`}>
-                                        {selected?.find(f => f?.id == i?.id) && <div className={styles.selected}><BsCheckLg/></div>}
-                                        <img src={i.image_url} />
-                                    </div>
-                                </Col>
-                            ))
+                {
+                    loading ? (
+                        <Skeleton/>
+                    ) : (
+                        <Row gutter={[12,12]}>
+                            {
+                                 activeTab === '1' && (
+                                    mediaList?.length > 0 ? (
+                                        mediaList?.map((i, index) => (
+                                            <Col span={6}>
+                                                <div onClick={() => onSelectMedia(i)} className={`${styles.item} ${selected?.find(f => f?.id == i?.id) ? styles.active : ''}`}>
+                                                    {selected?.find(f => f?.id == i?.id) && <div className={styles.selected}><BsCheckLg/></div>}
+                                                    <img src={i.image_url} />
+                                                </div>
+                                            </Col>
+                                        ))
+                                    ) : null
+                                )
+                            }
+                        </Row>
+                    )
+                }
+                {
+                    mediaList && mediaList?.length > 0 && (
+                        loadMore && (
+                            <div ref={ref} className={styles.load}>
+                                <PulseLoader color='#fff'/>
+                            </div>
                         )
-                    }
-                </Row>
+                    )
+                }
+               
                 
             </div>
         </div>

@@ -420,9 +420,9 @@ class ApiService {
     }
 
 
-    getMedia = async (token: any, id: any) => {
+    getMedia = async (token: any, id: any, page?: number) => {
         try {
-            let res = await fetch(`${API_PATH}operators/ancets/${id}/media`, {
+            let res = await fetch(`${API_PATH}operators/ancets/${id}/media?page=${page}`, {
                 method: "GET",
                 headers: {
                     ...headers,

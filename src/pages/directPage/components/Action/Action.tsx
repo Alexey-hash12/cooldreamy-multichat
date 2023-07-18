@@ -146,12 +146,12 @@ const Action:FC<I> = ({
 
 
     const onSendMedia = (images: any[]) => {
-     
+        console.log(images)
         if(id && token) {
             if(type === 'chat') {
                 service.sendChatMedia(token, id, {
-                    thumbnail_url: images[0]?.thumbnail_url,
-                    image_url: images[0]?.thumbnail_url
+                    thumbnail_url: images[0]?.image_url,
+                    image_url: images[0]?.image_url
                 }).then(res => {
                 
                     if(res?.id) {

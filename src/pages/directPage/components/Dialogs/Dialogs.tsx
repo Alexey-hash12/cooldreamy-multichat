@@ -53,6 +53,8 @@ const Dialogs:FC<I> = ({
     }, [inView, loadMore, setPage, list])
 
 
+
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.search}>
@@ -78,7 +80,7 @@ const Dialogs:FC<I> = ({
                     )
                     
                 }
-                 {
+                {
                     list && list?.length > 0 && (
                         loadMore && (
                             <div ref={ref} className={styles.load}>
