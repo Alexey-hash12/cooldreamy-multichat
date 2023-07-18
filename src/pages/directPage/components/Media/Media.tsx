@@ -14,8 +14,8 @@ import Skeleton from './components/Skeleton/Skeleton';
 import { PulseLoader } from 'react-spinners';
 
 const tabs = [
-    {value: '1', label: 'Профиль', icon: <BsImages/>},
-    {value: '2', label: '18+', icon: <BsImages/>},
+    {value: '2', label: 'Паблик', icon: <BsImages/>},
+    {value: '4', label: '18+', icon: <BsImages/>},
 ]
 
 interface I {
@@ -43,7 +43,7 @@ const Media:FC<I> = ({
 
     const [selfId, setSeldId] = useState<any>()
 
-    const [activeTab, setActiveTab] = useState('1')
+    const [activeTab, setActiveTab] = useState('2')
     const [selected, setSelected] = useState<any[]>([])
     const [mediaList, setMediaList] = useState<any[]>([])
     const [page, setPage] = useState<number>(1)
@@ -126,15 +126,15 @@ const Media:FC<I> = ({
   
 
     const getMedia = () => {
-        if(token && selfId) {
+        if(token && selfId && activeTab) {
             page === 1 && setLoading(true)
-            service.getMedia(token, selfId, page).then(res => {
-                
-                setTotal(res?.profile_photo?.total)
+            service.getMedia(token, selfId, page, Number(activeTab)).then(res => {
+                console.log(res)
+                setTotal(res?.total)
                 if(page === 1) {
-                    setMediaList(res?.profile_photo?.data)
+                    setMediaList(res?.data)
                 } else {
-                    setMediaList(s => [...s, ...res?.profile_photo?.data])
+                    setMediaList(s => [...s, ...res?.data])
                 }
             }).finally(() => {
                 setLoading(false)
@@ -149,7 +149,7 @@ const Media:FC<I> = ({
 
     useEffect(() => {
         setPage(1)
-    }, [selfId])
+    }, [selfId, activeTab])
     
 
 
