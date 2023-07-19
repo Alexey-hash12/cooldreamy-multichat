@@ -23,7 +23,9 @@ const DirectUser = (props: any) => {
         isSelf,
         count_letters,
         count_chats,
-        count_images
+        count_images,
+        user_avatar_url,
+        user_thumbnail_url
     } = props
 
 
@@ -34,7 +36,7 @@ const DirectUser = (props: any) => {
                 <Col span={14}>
                     <div className={styles.main}>
                         <Avatar
-                            image={avatar_url_thumbnail}
+                            image={user_thumbnail_url || user_avatar_url}
                             isNewAction={online === 1}
                             size={32}
                             />

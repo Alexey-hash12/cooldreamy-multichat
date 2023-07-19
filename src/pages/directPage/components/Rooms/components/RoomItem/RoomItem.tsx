@@ -40,7 +40,7 @@ const RoomItemComponent:FC<any> = ({
             <div className={styles.part}>
                 <Avatar
                     isNewAction={self_user?.online === 1}
-                    image={self_user?.user_avatar_url}
+                    image={self_user?.user_thumbnail_url || self_user?.user_avatar_url}
                     />
                 <div className={styles.body}>
                     <Row gutter={[3,3]}>
@@ -85,7 +85,7 @@ const RoomItemComponent:FC<any> = ({
                 </div>
                 <Avatar
                     isNewAction={other_user?.online === 1}
-                    image={other_user?.user_avatar_url}
+                    image={other_user?.user_thumbnail_url || other_user?.user_avatar_url}
                     />
             </div>
         </div>

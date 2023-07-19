@@ -422,7 +422,8 @@ class ApiService {
 
     getMedia = async (token: any, id: any, page?: number, category_id?: number) => {
         try {
-            let res = await fetch(`${API_PATH}operators/chats/${id}/anket/media?page=${page}&category_id=${category_id}`, {
+            // let res = await fetch(`${API_PATH}operators/chats/${id}/anket/media?page=${page}&category_id=${category_id}`, {
+            let res = await fetch(`${API_PATH}operators/ancets/${id}/media?page=${page}&category_id=${category_id}`, {
                 method: "GET",
                 headers: {
                     ...headers,

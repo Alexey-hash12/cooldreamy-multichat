@@ -17,7 +17,7 @@ const DialogItemComponent = (props: any) => {
     const {
         name,
         age,
-        
+        user_thumbnail_url,
         user_avatar_url,
         online,
     } = props?.other_user || {}
@@ -69,7 +69,7 @@ const DialogItemComponent = (props: any) => {
         <div onClick={() => nav(`/direct?type=${type_of_model === 'letter' ? 'mail' : 'chat'}&id=${id}&self_id=${self_user?.id}`)} className={`${styles.wrapper}`}>
             <div className={styles.avatar}>
                 <Avatar
-                    image={user_avatar_url}
+                    image={user_thumbnail_url || user_avatar_url}
                     isNewAction={online === 1}
                     />
             </div>

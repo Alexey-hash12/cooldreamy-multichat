@@ -96,7 +96,7 @@ const Media:FC<I> = ({
         if(isOpen) {
             getMedia()
         }
-    }, [page, token, selfId, isOpen])
+    }, [page, token, selfId, isOpen, activeTab])
 
     
 
@@ -145,9 +145,7 @@ const Media:FC<I> = ({
         }
     }
 
-    // useEffect(() => {
-    //     closeHandle()
-    // }, [selfId])
+   
 
 
     useEffect(() => {
@@ -204,13 +202,13 @@ const Media:FC<I> = ({
                     ) : (
                         <Row gutter={[12,12]}>
                             {
-                                 activeTab === '1' && (
+                                 activeTab && (
                                     mediaList?.length > 0 ? (
                                         mediaList?.map((i, index) => (
                                             <Col span={6}>
                                                 <div onClick={() => onSelectMedia(i)} className={`${styles.item} ${selected?.find(f => f?.id == i?.id) ? styles.active : ''}`}>
                                                     {selected?.find(f => f?.id == i?.id) && <div className={styles.selected}><BsCheckLg/></div>}
-                                                    <img src={i.image_url} />
+                                                    <img src={i?.thumbnail_url || i.image_url} />
                                                 </div>
                                             </Col>
                                         ))
