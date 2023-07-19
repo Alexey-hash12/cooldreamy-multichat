@@ -13,6 +13,7 @@ import Action from './components/Action/Action';
 import { sortingChatList, sortingDialogList, sortingMailChatList } from '../../utils/sorting';
 import { useDebounce } from 'usehooks-ts';
 import Media from './components/Media/Media';
+import Limits from './components/Limits/Limits';
 
 const service = new ApiService()
 
@@ -25,6 +26,8 @@ const DirectPage = () => {
 
     const [chatBottomPadding, setChatBottomPadding] = useState<number>(70)
 
+    const [leftSideTab, setLeftSideTab] = useState<'1' | '2'>('1')
+
 
     //loading
     const [loadRooms, setLoadRooms] = useState(false)
@@ -35,6 +38,7 @@ const DirectPage = () => {
     const [rooms, setRooms] = useState<any[]>([])
     const [messages, setMessages] = useState<any[]>([])
     const [inbox, setInbox] = useState<any[]>([])
+    const [limits, setLimits] = useState<any[]>([])
 
     const [dialogPage, setDialogPage] = useState(1)
     const [dialogTotal, setDialogTotal] = useState<any>()
@@ -46,6 +50,10 @@ const DirectPage = () => {
 
     const [inboxPage, setInboxPage] = useState(1)
     const [inboxTotal, setInboxTotal] = useState<any>()
+    
+    const [limitPage, setLimitPage] = useState<number>(1)
+    const [limitTotal, setLimitTotal] = useState<any>()
+    const [loadLimit, setLoadLimit] = useState(false)
 
     const [chatsSearch, setChatsSearch] = useState<string>('')
     const chatSearchDebounced = useDebounce<string>(chatsSearch, 500)
@@ -74,9 +82,7 @@ const DirectPage = () => {
             if(type === 'chat') {
                 chatsPage === 1 && setLoadRooms(true)
                 service.getChats(token, {page: chatsPage, per_page: 20, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
-                    console.log(res?.data[0])
                     setChatsTotal(res?.total)
-                    
                     if(chatsPage === 1) {
                         setRooms(res?.data)
                     } else {
@@ -89,7 +95,6 @@ const DirectPage = () => {
             if(type === 'mail') {
                 chatsPage === 1 && setLoadRooms(true)
                 service.getMails(token, {page: chatsPage, per_page: 5, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
-                    console.log(res?.data[0])
                     setChatsTotal(res?.total)
                     if(chatsPage === 1) {
                         setRooms(res?.data)
@@ -120,6 +125,23 @@ const DirectPage = () => {
             })
         }
     }
+
+    const getLimits = () => {
+        if(token && limitPage) {
+            limitPage === 1 && setLoadLimit(false)
+            service.getLimits(token, {page: limitPage}).then(res => {
+
+                setLimitTotal(res?.total)
+                if(limitPage === 1) {
+                    setLimits(res?.data)
+                } else {
+                    setLimits(s => [...s, ...res?.data])
+                }
+            })
+        }
+    }
+
+ 
 
 
 
@@ -177,6 +199,9 @@ const DirectPage = () => {
         setDialogPage(1)
     }, [type, id])
 
+    useEffect(() => {
+        getLimits()
+    }, [token, limitPage])
     
 
     useEffect(() => {
@@ -346,7 +371,6 @@ const DirectPage = () => {
 
             if(type === 'chat') {
                 if(newChatMessage) {
-                    console.log(newChatMessage)
                     // onUpdateChat && onUpdateChat({
                     //     messageBody: newChatMessage?.chat_list_item?.chat?.last_message, 
                     //     dialogBody: newChatMessage?.chat_list_item?.chat
@@ -355,7 +379,6 @@ const DirectPage = () => {
                         messageBody: newChatMessage?.chat_message, 
                         dialogBody: {...newChatMessage?.chat_list_item, other_user: newChatMessage?.chat_message?.sender_user, self_user: newChatMessage?.chat_message?.recepient_user}
                     })
-                    console.log(newChatMessage)
                 }
             }
             if(type === 'mail') {
@@ -386,19 +409,43 @@ const DirectPage = () => {
             <DirectLayout>
                 <Row gutter={[12,12]}>
                     <Col span={7}>
+                        <div className={styles.tabs}>
+                            <button onClick={() => setLeftSideTab('1')} className={`${styles.tab_item} ${leftSideTab === '1' ? styles.active : ''}`}>
+                                Лимиты
+                            </button>
+                            <button onClick={() => setLeftSideTab('2')} className={`${styles.tab_item} ${leftSideTab === '2' ? styles.active : ''}`}>
+                                Сообщения
+                            </button>
+                        </div>
                         <div className={`${styles.panel} custom-scroll-vertical`}>
-                            <Dialogs
-                                list={inbox}
-                                setPage={setInboxPage}
-                                total={inboxTotal}
-                                type={type}
+                            {
+                                leftSideTab === '1' && (
+                                    <Limits
+                                        list={limits}
+                                        total={limitTotal}
+                                        type={type}
+                                        setPage={setLimitPage}
+                                        loading={loadLimit}
+                                        />
+                                )
+                            }
+                            {
+                                leftSideTab === '2' && (
+                                    <Dialogs
+                                        list={inbox}
+                                        setPage={setInboxPage}
+                                        total={inboxTotal}
+                                        type={type}
 
-                                currentId={id}
-                                searchValue={inboxSearch}
-                                setSearchValue={setInboxSearch}
+                                        currentId={id}
+                                        searchValue={inboxSearch}
+                                        setSearchValue={setInboxSearch}
 
-                                loading={loadInbox}
-                                />
+                                        loading={loadInbox}
+                                        />
+                                )
+                            }
+                            
                         </div>
                     </Col>
                     <Col span={10}>

@@ -1,5 +1,28 @@
 .wrapper {
 
+    .tabs {
+        display: flex;
+        align-items: center;
+        margin-left: -10px;
+        margin-right: -10px;
+        margin-bottom: 10px;    
+
+        .tab_item {
+            width: calc((100% / 2) - 20px);
+            margin: 0 10px;
+            padding: 10px 5px;
+            border-radius: 10px;
+            color: #7D6AF0;
+            background-color: #2E2E4F;
+            font-weight: 500;
+        }
+
+        .tab_item.active {
+            background-color: #7D6AF0;
+            color: #fff;
+        }
+    }
+
     .panel {
         height: calc(100vh - 95px - 30px);
         overflow-y: auto;

@@ -457,6 +457,22 @@ class ApiService {
             console.log(err)
         }
     }
+
+    getLimits = async (token: any, {page}: {page?: number}) => {
+        try {
+            let res = await fetch(endpoints.getLimits + `?page=${page}`, {
+                method: "GET",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
 }
 
 export default ApiService;
