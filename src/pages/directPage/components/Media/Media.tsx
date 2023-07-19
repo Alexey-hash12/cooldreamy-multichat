@@ -14,8 +14,11 @@ import Skeleton from './components/Skeleton/Skeleton';
 import { PulseLoader } from 'react-spinners';
 
 const tabs = [
-    {value: '2', label: 'Паблик', icon: <BsImages/>},
+    {value: '1', label: 'Аватар', icon: <BsImages/>},
+    {value: '2', label: 'Профиль', icon: <BsImages/>},
+    {value: '3', label: 'Контент', icon: <BsImages/>},
     {value: '4', label: '18+', icon: <BsImages/>},
+    // {value: '5', label: 'Паблик', icon: <BsImages/>},
 ]
 
 interface I {
