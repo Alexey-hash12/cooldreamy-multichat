@@ -79,6 +79,7 @@ const RoomItemComponent:FC<any> = ({
                             <UserTitle
                                 username={other_user?.name}
                                 age={other_user?.age}
+                                justify={'flex-end'}
                                 />
                         </Col>
                     </Row>

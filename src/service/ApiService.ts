@@ -473,6 +473,23 @@ class ApiService {
             console.log(err)
         }
     }
+
+    createChat = async (token: any, {anket_id, man_id, operator_chat_limit_id}: {anket_id: any, man_id: any, operator_chat_limit_id: any}) => {
+        try {
+            let res = await fetch(endpoints.createChat, {
+                method: "POST",
+                headers: {
+                    ...headers,
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({anket_id,man_id, operator_chat_limit_id})
+            })
+            const r = await checkAuth(res)
+            return await r;
+        } catch(err) {
+            console.log(err)
+        }
+    }
 }
 
 export default ApiService;

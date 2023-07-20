@@ -14,6 +14,7 @@ import { sortingChatList, sortingDialogList, sortingMailChatList } from '../../u
 import { useDebounce } from 'usehooks-ts';
 import Media from './components/Media/Media';
 import Limits from './components/Limits/Limits';
+import endpoints from '../../service/endpoints';
 
 const service = new ApiService()
 
@@ -83,6 +84,7 @@ const DirectPage = () => {
                 chatsPage === 1 && setLoadRooms(true)
                 service.getChats(token, {page: chatsPage, per_page: 20, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
                     setChatsTotal(res?.total)
+                    console.log(res?.data[0])
                     if(chatsPage === 1) {
                         setRooms(res?.data)
                     } else {
@@ -130,7 +132,7 @@ const DirectPage = () => {
         if(token && limitPage) {
             limitPage === 1 && setLoadLimit(false)
             service.getLimits(token, {page: limitPage}).then(res => {
-
+                console.log(res?.data[0])
                 setLimitTotal(res?.total)
                 if(limitPage === 1) {
                     setLimits(res?.data)
@@ -277,7 +279,6 @@ const DirectPage = () => {
 
                 const foundDialog = rooms?.find(s => s?.id == body?.dialogBody?.id) 
                 
-                console.log(foundDialog)
                 if(foundDialog) {
                     setRooms(s => {
                         const m = s;
@@ -295,6 +296,22 @@ const DirectPage = () => {
         }
     }
 
+
+    const onCreateChat = (body: {anket_id: any, man_id: any, operator_chat_limit_id: any}) => {
+        if(token && body) {
+            service.createChat(token, body).then(res => {
+                console.log(res)
+                if(res?.id) {
+                    setRooms(s => [res, ...s])
+                    setLimits(s => {
+                        const m = [...s];
+                        const rm = m.splice(m.findIndex(i => i.id == body?.operator_chat_limit_id), 1)
+                        return [...m]
+                    })
+                }
+            })
+        }
+    }
  
 
     useEffect(() => {
@@ -411,26 +428,15 @@ const DirectPage = () => {
                     <Col span={7}>
                         <div className={styles.tabs}>
                             <button onClick={() => setLeftSideTab('1')} className={`${styles.tab_item} ${leftSideTab === '1' ? styles.active : ''}`}>
-                                Лимиты
+                                Сообщения
                             </button>
                             <button onClick={() => setLeftSideTab('2')} className={`${styles.tab_item} ${leftSideTab === '2' ? styles.active : ''}`}>
-                                Сообщения
+                                Лимиты
                             </button>
                         </div>
                         <div className={`${styles.panel} custom-scroll-vertical`}>
                             {
                                 leftSideTab === '1' && (
-                                    <Limits
-                                        list={limits}
-                                        total={limitTotal}
-                                        type={type}
-                                        setPage={setLimitPage}
-                                        loading={loadLimit}
-                                        />
-                                )
-                            }
-                            {
-                                leftSideTab === '2' && (
                                     <Dialogs
                                         list={inbox}
                                         setPage={setInboxPage}
@@ -442,6 +448,18 @@ const DirectPage = () => {
                                         setSearchValue={setInboxSearch}
 
                                         loading={loadInbox}
+                                        />
+                                )
+                            }
+                            {
+                                leftSideTab === '2' && (
+                                    <Limits
+                                        onCreateChat={onCreateChat}
+                                        list={limits}
+                                        total={limitTotal}
+                                        type={type}
+                                        setPage={setLimitPage}
+                                        loading={loadLimit}
                                         />
                                 )
                             }

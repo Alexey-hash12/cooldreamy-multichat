@@ -33,7 +33,9 @@ const endpoints = {
     fault: `${API_PATH}operators/fines`,
 
 
-    getLimits: `${API_PATH}operators/limits`
+    getLimits: `${API_PATH}operators/limits`,
+
+    createChat: `${API_PATH}operators/chats/store/chat`
 
 
 }

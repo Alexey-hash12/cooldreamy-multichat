@@ -3,17 +3,19 @@ import {FC} from 'react';
 
 interface I {
     username?: string,
-    age?: number | string
+    age?: number | string,
+    justify?: 'flex-end' | 'flex-start'
 }
 
 const UserTitle:FC<I> = ({
     username,
-    age
+    age,
+    justify = 'flex-start'
 }) => {
 
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} style={{justifyContent: justify}}>
             <span className={styles.username}>{username}</span><span className={styles.age}>, {age}</span>
         </div>
     )
