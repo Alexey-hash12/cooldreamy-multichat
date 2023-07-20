@@ -84,7 +84,6 @@ const DirectPage = () => {
                 chatsPage === 1 && setLoadRooms(true)
                 service.getChats(token, {page: chatsPage, per_page: 20, search: chatSearchDebounced, filter_type: chatsFilter}).then(res => {
                     setChatsTotal(res?.total)
-                    console.log(res?.data[0])
                     if(chatsPage === 1) {
                         setRooms(res?.data)
                     } else {
@@ -132,7 +131,6 @@ const DirectPage = () => {
         if(token && limitPage) {
             limitPage === 1 && setLoadLimit(false)
             service.getLimits(token, {page: limitPage}).then(res => {
-                console.log(res?.data[0])
                 setLimitTotal(res?.total)
                 if(limitPage === 1) {
                     setLimits(res?.data)
@@ -300,7 +298,6 @@ const DirectPage = () => {
     const onCreateChat = (body: {anket_id: any, man_id: any, operator_chat_limit_id: any}) => {
         if(token && body) {
             service.createChat(token, body).then(res => {
-                console.log(res)
                 if(res?.id) {
                     setRooms(s => [res, ...s])
                     setLimits(s => {
