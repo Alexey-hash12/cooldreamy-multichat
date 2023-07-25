@@ -41,7 +41,8 @@ const Direct:FC<I> = ({
 
     const [paddingTop, setPaddingTop] = useState(0)
     const exRef = useRef<HTMLDivElement>(null)
-    
+    const [updated, setUpdated] = useState(0);
+
     
     useEffect(() => {
         if(total !== undefined) {
@@ -50,11 +51,16 @@ const Direct:FC<I> = ({
        
     }, [list, total])
 
+    setTimeout(() => {
+        setUpdated(updated + 1);
+        console.log('s')
+    }, 1000)
+
     useEffect(() => {
         if(loadMore && inView) {
             setPage && setPage((s: number) => s + 1)
         }
-    }, [inView, loadMore, setPage, list])
+    }, [inView, loadMore, setPage, list, updated])
     
 
     useEffect(() => {
