@@ -51,11 +51,6 @@ const Direct:FC<I> = ({
        
     }, [list, total])
 
-    setTimeout(() => {
-        setUpdated(updated + 1);
-        console.log('s')
-    }, 1000)
-
     useEffect(() => {
         if(loadMore && inView) {
             setPage && setPage((s: number) => s + 1)

@@ -198,15 +198,20 @@ const DirectPage = () => {
     useEffect(() => {
         setDialogPage(1)
     }, [type, id])
+    const [updated, setUpdated] = useState(0);
 
     useEffect(() => {
         getLimits()
     }, [token, limitPage])
-    
+
+    setTimeout(() => {
+        setUpdated(updated + 1);
+        console.log('s')
+    }, 1000)
 
     useEffect(() => {
         getInbox()
-    }, [token, inboxPage, inboxSearchValue])
+    }, [token, inboxPage, inboxSearchValue, updated])
 
     useEffect(() => {
         getDialog()
